@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: ams-application
+  datasource:
+    url: jdbc:postgresql://localhost:5431/ams
+    username: amsadmin
+    password: ams123
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true

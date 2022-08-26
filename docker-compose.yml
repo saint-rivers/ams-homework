@@ -1,0 +1,22 @@
+version: "3.8"
+
+volumes:
+  ams_db:
+
+services:
+  ams-database:
+    image: postgres:14.4-alpine
+    restart: unless-stopped
+    container_name: ams.spring.com
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 5s
+      retries: 3
+    ports:
+      - "5431:5432"
+    volumes:
+      - ams_db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ams
+      POSTGRES_USER: amsadmin
+      POSTGRES_PASSWORD: ams123
