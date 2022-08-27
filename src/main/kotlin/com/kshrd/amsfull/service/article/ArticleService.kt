@@ -1,4 +1,15 @@
 package com.kshrd.amsfull.service.article
 
+import com.kshrd.amsfull.model.dto.ArticleDto
+import com.kshrd.amsfull.model.request.ArticleRequest
+import org.springframework.data.domain.Page
+import java.util.UUID
+
 interface ArticleService {
+    fun createArticle(article: ArticleRequest): ArticleDto
+    fun fetchBy(page: Int, size: Int): Page<ArticleDto>
+    fun findByArticleId(id: UUID): ArticleDto
+    fun deleteById(id: UUID)
+    fun update(id: UUID, req: ArticleRequest): ArticleDto
+    fun fetchPublished(page: Int, size: Int): Page<ArticleDto>
 }

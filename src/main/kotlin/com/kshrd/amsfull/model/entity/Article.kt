@@ -1,12 +1,14 @@
 package com.kshrd.amsfull.model.entity
 
 import com.kshrd.amsfull.model.Document
+import com.kshrd.amsfull.model.dto.ArticleDto
 import org.hibernate.Hibernate
 import javax.persistence.*
 
 @Entity
 @Table(name = "articles")
-open class Article: Document() {
+open class Article(title: String, description: String, isPublished: Boolean = false) :
+    Document(title, description, isPublished) {
 
     @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JoinTable(
@@ -28,5 +30,14 @@ open class Article: Document() {
     }
 
     override fun hashCode(): Int = javaClass.hashCode()
+    fun toDto() = id?.let {
+        ArticleDto(
+            id = it,
+            title = title,
+            description = description,
+            categories = categories.map { cat -> cat.toDto() }.toSet(),
+            isPublished = isPublished == true
+        )
+    }
 
 }

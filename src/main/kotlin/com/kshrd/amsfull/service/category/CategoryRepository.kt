@@ -10,11 +10,11 @@ import org.springframework.stereotype.Repository
 interface CategoryRepository : JpaRepository<Category, Long> {
 
     fun findAllByNameStartsWith(
-            name: String,
+        name: String,
         pageable: Pageable
     ): Page<Category>
 
-    fun findAllByName(
+    fun findAllByNameStartsWith(
         name: String
     ): List<Category>
 

@@ -1,10 +1,10 @@
 package com.kshrd.amsfull.controller
 
 import com.kshrd.amsfull.model.response.ApiResponse
-import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.RestControllerAdvice
 
-@ControllerAdvice
+@RestControllerAdvice
 class ExceptionHandler {
 
     @ExceptionHandler(value = [Exception::class])
