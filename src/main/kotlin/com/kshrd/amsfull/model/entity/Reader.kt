@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "readers")
-open class Reader : AppUser() {
+open class Reader(_name: String) : AppUser(_name) {
     @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JoinTable(
         name = "readers_article_bookmarks",

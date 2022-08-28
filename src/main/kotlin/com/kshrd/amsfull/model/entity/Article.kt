@@ -18,8 +18,10 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
     )
     open var categories: MutableSet<Category> = mutableSetOf()
 
-    @OneToMany(mappedBy = "article", cascade = [CascadeType.ALL], orphanRemoval = true)
-    open var teachers: MutableSet<Teacher> = mutableSetOf()
+
+    @ManyToOne(cascade = [CascadeType.ALL])
+    @JoinColumn(name = "teacher_id", nullable = false)
+    open var teacher: Teacher? = null
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -36,7 +38,8 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
             title = title,
             description = description,
             categories = categories.map { cat -> cat.toDto() }.toSet(),
-            isPublished = isPublished == true
+            isPublished = isPublished == true,
+            teacher = teacher?.toDto()!!
         )
     }
 
