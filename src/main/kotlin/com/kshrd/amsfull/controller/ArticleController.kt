@@ -2,6 +2,7 @@ package com.kshrd.amsfull.controller
 
 import com.kshrd.amsfull.model.dto.ArticleDto
 import com.kshrd.amsfull.model.request.ArticleRequest
+import com.kshrd.amsfull.model.request.CommentRequest
 import com.kshrd.amsfull.model.response.ApiResponse
 import com.kshrd.amsfull.service.article.ArticleService
 import org.springframework.data.domain.Page
@@ -75,6 +76,16 @@ class ArticleController(val articleService: ArticleService) {
                 message = "created a new article",
                 status = "201",
                 payload = articleService.createArticle(article)
+            )
+        )
+
+    @PostMapping("/{id}/comments")
+    fun commentOnArticle(@RequestBody commentRequest: CommentRequest, @PathVariable id: UUID) =
+        ResponseEntity.ok().body(
+            ApiResponse.SuccessWithPayload(
+                message = "commented on article id: $id",
+                status = "201",
+                payload = articleService.addComment(id, commentRequest)
             )
         )
 

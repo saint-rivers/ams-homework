@@ -14,7 +14,6 @@ open class Teacher(_name: String) : AppUser(_name) {
         TeacherDto(
             id = id!!,
             name = it,
-
         )
     }
 

@@ -23,6 +23,9 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
     @JoinColumn(name = "teacher_id", nullable = false)
     open var teacher: Teacher? = null
 
+    @OneToMany(mappedBy = "article", orphanRemoval = true)
+    open var comments: MutableSet<Comment> = mutableSetOf()
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
@@ -32,6 +35,7 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
     }
 
     override fun hashCode(): Int = javaClass.hashCode()
+
     fun toDto() = id?.let {
         ArticleDto(
             id = it,
@@ -39,7 +43,8 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
             description = description,
             categories = categories.map { cat -> cat.toDto() }.toSet(),
             isPublished = isPublished == true,
-            teacher = teacher?.toDto()!!
+            teacher = teacher?.toDto()!!,
+            comments = comments.map { comment -> comment.toDto() }.toSet()
         )
     }
 
