@@ -26,7 +26,7 @@ class ArticleServiceImpl(
 
         val fetchedTeacher = appUserRepository.findById(article.teacherId)
         if (fetchedTeacher.isPresent) {
-            articleReq.appUser = fetchedTeacher.get()
+            articleReq.teacher = fetchedTeacher.get()
         } else throw NoSuchElementException("cannot find teacher with id: ${article.teacherId}")
         return articleRepository.save(articleReq).toDto()!!
     }

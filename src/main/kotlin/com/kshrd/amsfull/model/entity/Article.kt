@@ -2,6 +2,7 @@ package com.kshrd.amsfull.model.entity
 
 import com.kshrd.amsfull.model.Document
 import com.kshrd.amsfull.model.dto.ArticleDto
+import com.kshrd.amsfull.model.dto.BookmarkDto
 import org.hibernate.Hibernate
 import javax.persistence.*
 
@@ -21,7 +22,7 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
 
     @ManyToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "teacher_id", nullable = false)
-    open var appUser: AppUser? = null
+    open var teacher: AppUser? = null
 
     @OneToMany(mappedBy = "article", orphanRemoval = true)
     open var comments: MutableSet<Comment> = mutableSetOf()
@@ -43,8 +44,17 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
             description = description,
             categories = categories.map { cat -> cat.toDto() }.toSet(),
             isPublished = isPublished == true,
-            teacher = appUser?.toDto()!!,
+            teacher = teacher?.toDto()!!,
             comments = comments.map { comment -> comment.toDto() }.toSet()
+        )
+    }
+
+    fun toBookmarkDto(): BookmarkDto {
+        return BookmarkDto(
+            articleId = id!!,
+            title = title,
+            description = description,
+            teacher = teacher?.toDto()!!
         )
     }
 

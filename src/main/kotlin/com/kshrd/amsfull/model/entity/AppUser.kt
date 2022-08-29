@@ -19,8 +19,13 @@ open class AppUser(_name: String, _role: UserRole) {
     @Enumerated(value = EnumType.STRING)
     open var role: UserRole = _role
 
-    @OneToMany(mappedBy = "appUser", cascade = [CascadeType.ALL], orphanRemoval = true)
-    open var articles: MutableSet<Article> = mutableSetOf()
+    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH])
+    @JoinTable(
+        name = "user_bookmarked_articles",
+        joinColumns = [JoinColumn(name = "app_user_id")],
+        inverseJoinColumns = [JoinColumn(name = "bookmarked_article_id")]
+    )
+    open var bookmarkedArticles: MutableSet<Article> = mutableSetOf()
 
     fun toDto() = name?.let {
         AppUserDto(
