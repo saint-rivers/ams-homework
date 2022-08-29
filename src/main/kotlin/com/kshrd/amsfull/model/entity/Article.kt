@@ -21,7 +21,7 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
 
     @ManyToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "teacher_id", nullable = false)
-    open var teacher: Teacher? = null
+    open var appUser: AppUser? = null
 
     @OneToMany(mappedBy = "article", orphanRemoval = true)
     open var comments: MutableSet<Comment> = mutableSetOf()
@@ -43,7 +43,7 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
             description = description,
             categories = categories.map { cat -> cat.toDto() }.toSet(),
             isPublished = isPublished == true,
-            teacher = teacher?.toDto()!!,
+            teacher = appUser?.toDto()!!,
             comments = comments.map { comment -> comment.toDto() }.toSet()
         )
     }

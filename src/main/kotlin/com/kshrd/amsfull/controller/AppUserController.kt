@@ -1,23 +1,23 @@
 package com.kshrd.amsfull.controller
 
-import com.kshrd.amsfull.model.request.TeacherRequest
+import com.kshrd.amsfull.model.request.AppUserRequest
 import com.kshrd.amsfull.model.response.ApiResponse
-import com.kshrd.amsfull.service.teacher.TeacherService
+import com.kshrd.amsfull.service.teacher.AppUserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
-@RequestMapping("/api/v1/teachers")
-class TeacherController(val teacherService: TeacherService) {
+@RequestMapping("/api/v1/users")
+class AppUserController(val appUserService: AppUserService) {
 
     @PostMapping
-    fun create(@RequestBody teacherRequest: TeacherRequest) =
+    fun create(@RequestBody appUserRequest: AppUserRequest) =
         ResponseEntity.ok().body(
             ApiResponse.SuccessWithPayload(
                 message = "",
                 status = "201",
-                payload = teacherService.create(teacherRequest)
+                payload = appUserService.create(appUserRequest)
             )
         )
 
@@ -29,7 +29,7 @@ class TeacherController(val teacherService: TeacherService) {
         if (page < 1) throw IllegalStateException("page cannot be smaller than 1")
         if (size < 1) throw IllegalStateException("size cannot be smaller than 1")
 
-        val payload = teacherService.fetchBy(page - 1, size)
+        val payload = appUserService.fetchBy(page - 1, size)
         return ResponseEntity.ok().body(
             ApiResponse.SuccessWithPage(
                 message = "successfully fetched teachers",
@@ -49,24 +49,24 @@ class TeacherController(val teacherService: TeacherService) {
             ApiResponse.SuccessWithPayload(
                 message = "teacher found",
                 status = "200",
-                payload = teacherService.findById(id)
+                payload = appUserService.findById(id)
             )
         )
     }
 
     @PutMapping("/{id}")
-    fun update(@RequestBody teacherRequest: TeacherRequest, @PathVariable id: UUID) =
+    fun update(@RequestBody appUserRequest: AppUserRequest, @PathVariable id: UUID) =
         ResponseEntity.ok().body(
             ApiResponse.SuccessWithPayload(
                 message = "updated teacher successfully",
                 status = "200",
-                payload = teacherService.update(id, teacherRequest)
+                payload = appUserService.update(id, appUserRequest)
             )
         )
 
     @DeleteMapping("/{id}")
     fun remove(@PathVariable id: UUID): ResponseEntity<ApiResponse> {
-        teacherService.deleteById(id)
+        appUserService.deleteById(id)
         return ResponseEntity.ok().body(
             ApiResponse.Success(
                 message = "deleted article with id: $id",

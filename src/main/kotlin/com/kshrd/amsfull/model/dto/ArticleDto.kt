@@ -9,6 +9,6 @@ data class ArticleDto(
     val description: String? = null,
     val isPublished: Boolean = false,
     var categories: Set<CategoryDto> = emptySet(),
-    var teacher: TeacherDto,
+    var teacher: AppUserDto,
     val comments: Set<CommentDto> = emptySet()
 ) : Serializable

@@ -5,7 +5,7 @@ import com.kshrd.amsfull.model.dto.CommentDto
 import com.kshrd.amsfull.model.request.ArticleRequest
 import com.kshrd.amsfull.model.request.CommentRequest
 import com.kshrd.amsfull.service.category.CategoryRepository
-import com.kshrd.amsfull.service.teacher.TeacherRepository
+import com.kshrd.amsfull.service.teacher.AppUserRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -16,7 +16,7 @@ class ArticleServiceImpl(
     val articleRepository: ArticleRepository,
     val categoryRepository: CategoryRepository,
     val commentRepository: CommentRepository,
-    val teacherRepository: TeacherRepository
+    val appUserRepository: AppUserRepository
 ) : ArticleService {
     override fun createArticle(article: ArticleRequest): ArticleDto {
         val articleReq = article.toEntity()
@@ -24,9 +24,9 @@ class ArticleServiceImpl(
             .map { categoryRepository.findAllByNameStartsWith(it)[0] }
             .toMutableSet()
 
-        val fetchedTeacher = teacherRepository.findById(article.teacherId)
+        val fetchedTeacher = appUserRepository.findById(article.teacherId)
         if (fetchedTeacher.isPresent) {
-            articleReq.teacher = fetchedTeacher.get()
+            articleReq.appUser = fetchedTeacher.get()
         } else throw NoSuchElementException("cannot find teacher with id: ${article.teacherId}")
         return articleRepository.save(articleReq).toDto()!!
     }
