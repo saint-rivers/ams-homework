@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.util.StringUtils
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
+import java.util.*
 
 class StorageException(_message: String) : RuntimeException(_message)
 
@@ -19,6 +21,7 @@ class FileServiceImpl(
 
     fun save(file: MultipartFile) {
         val filename = file.originalFilename?.let { StringUtils.cleanPath(it) }
+        val extension = File(filename!!).extension
         try {
             if (file.isEmpty) {
                 throw StorageException("Failed to store empty file $filename")
@@ -32,7 +35,7 @@ class FileServiceImpl(
         } catch (_: Exception) {
         }
 
-        val path = Paths.get(rootLocation).resolve(filename!!)
+        val path = Paths.get(rootLocation).resolve("${UUID.randomUUID()}.${extension}")
         Files.copy(file.inputStream, path, StandardCopyOption.REPLACE_EXISTING)
     }
 
