@@ -11,6 +11,13 @@ class ExceptionHandler {
     fun handleException(e: Exception) =
         ApiResponse.Failure(
             message = e.localizedMessage,
-            status = "400"
+            status = "500"
+        )
+
+    @ExceptionHandler(value = [NoSuchElementException::class])
+    fun handleNoSuchElementException(e: Exception) =
+        ApiResponse.Failure(
+            message = e.localizedMessage,
+            status = "206"
         )
 }

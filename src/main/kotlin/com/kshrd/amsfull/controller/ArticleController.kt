@@ -89,6 +89,16 @@ class ArticleController(val articleService: ArticleService) {
             )
         )
 
+    @GetMapping("/{id}/comments")
+    fun fetch(@PathVariable("id") articleId: UUID): ResponseEntity<ApiResponse> =
+        ResponseEntity.ok().body(
+            ApiResponse.SuccessWithPayload(
+                message = "successfully fetched comments of article id: $articleId",
+                status = "200",
+                payload = articleService.fetchCommentsOf(articleId)
+            )
+        )
+
     @DeleteMapping("/{id}")
     fun remove(@PathVariable id: UUID): ResponseEntity<ApiResponse> {
         articleService.deleteById(id)

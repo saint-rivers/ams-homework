@@ -72,4 +72,13 @@ class ArticleServiceImpl(
         } else throw NoSuchElementException("cannot find article $id")
     }
 
+    override fun fetchCommentsOf(articleId: UUID): List<CommentDto> {
+        val article = articleRepository.findById(articleId)
+        if (article.isPresent) {
+            val comments = commentRepository.findAllByArticle(article.get())
+            return comments.map { it.toDto() }
+        } else throw NoSuchElementException("cannot find article $articleId")
+    }
+
+
 }
