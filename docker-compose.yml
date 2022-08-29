@@ -7,7 +7,7 @@ services:
   ams-database:
     image: postgres:14.4-alpine
     restart: unless-stopped
-    container_name: ams.spring.com
+    container_name: db.ams.com
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready" ]
       interval: 5s
@@ -20,3 +20,18 @@ services:
       POSTGRES_DB: ams
       POSTGRES_USER: amsadmin
       POSTGRES_PASSWORD: ams123
+
+  ams-api:
+    image: eclipse-temurin:17.0.3_7-jre-alpine
+    restart: unless-stopped
+    container_name: api.ams.com
+    ports:
+      - "6645:8080"
+    entrypoint: [ "java","-jar","/root.jar" ]
+    volumes:
+      - ./build/libs/ams-full-0.0.1-SNAPSHOT.jar:/root.jar
+    environment:
+      spring.datasource.url: jdbc:postgresql://db.ams.com:5432/ams
+      spring.datasource.username: amsadmin
+      spring.datasource.password: ams123
+
