@@ -14,4 +14,4 @@ spring:
 
 files:
   storage:
-    path: src/main/resources/images
+    path: opt/resources/files

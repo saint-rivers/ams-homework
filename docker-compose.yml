@@ -30,6 +30,7 @@ services:
     entrypoint: [ "java","-jar","/root.jar" ]
     volumes:
       - ./build/libs/ams-full-0.0.1-SNAPSHOT.jar:/root.jar
+      - /opt/resources/files:/opt/resources/files
     environment:
       spring.datasource.url: jdbc:postgresql://db.ams.com:5432/ams
       spring.datasource.username: amsadmin

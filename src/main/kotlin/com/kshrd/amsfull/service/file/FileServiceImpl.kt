@@ -23,7 +23,6 @@ class FileServiceImpl(
 
     var rootLocation: Path = Paths.get(storagePath)
 
-
     fun save(file: MultipartFile) {
         val filename = file.originalFilename?.let { StringUtils.cleanPath(it) }
         val extension = File(filename!!).extension
