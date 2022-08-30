@@ -13,7 +13,7 @@ services:
       interval: 5s
       retries: 3
     ports:
-      - "5431:5432"
+      - "5439:5432"
     volumes:
       - ams_db:/var/lib/postgresql/data
     environment:

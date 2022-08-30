@@ -5,6 +5,7 @@ import com.kshrd.amsfull.model.dto.CommentDto
 import com.kshrd.amsfull.model.request.ArticleRequest
 import com.kshrd.amsfull.model.request.CommentRequest
 import com.kshrd.amsfull.service.category.CategoryRepository
+import com.kshrd.amsfull.service.mail.EmailService
 import com.kshrd.amsfull.service.teacher.AppUserRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -16,7 +17,8 @@ class ArticleServiceImpl(
     val articleRepository: ArticleRepository,
     val categoryRepository: CategoryRepository,
     val commentRepository: CommentRepository,
-    val appUserRepository: AppUserRepository
+    val appUserRepository: AppUserRepository,
+    val emailService: EmailService
 ) : ArticleService {
     override fun createArticle(article: ArticleRequest): ArticleDto {
         val articleReq = article.toEntity()
@@ -28,6 +30,9 @@ class ArticleServiceImpl(
         if (fetchedTeacher.isPresent) {
             articleReq.teacher = fetchedTeacher.get()
         } else throw NoSuchElementException("cannot find teacher with id: ${article.teacherId}")
+
+        emailService.sendSimpleMessage("rocaviusii@gmail.com", "TestMail", "hi there")
+
         return articleRepository.save(articleReq).toDto()!!
     }
 

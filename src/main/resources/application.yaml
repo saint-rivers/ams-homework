@@ -2,15 +2,27 @@ spring:
   application:
     name: ams-application
   datasource:
-    url: jdbc:postgresql://localhost:5431/ams
+    url: jdbc:postgresql://localhost:5439/ams
     username: amsadmin
     password: ams123
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-#  mvc:
-#    static-path-pattern: /f/**
+  mail:
+    host: ${MAIL_SENDER_HOST}
+    port: ${MAIL_SENDER_PORT}
+    username: ${MAIL_SENDER_USERNAME}
+    password: ${MAIL_SENDER_PASSWORD} # go to myaccount.gmail.com > security > app password > create an app and password
+    properties:
+      mail:
+        transport:
+          protocol: ${MAIL_SENDER_PROTOCOL}
+        debug: ${MAIL_SENDER_DEBUG}
+        smtp:
+          auth: ${MAIL_SENDER_AUTH}
+          starttls:
+            enable: ${MAIL_SENDER_STARTTLS_ENABLE}
 
 files:
   storage:
