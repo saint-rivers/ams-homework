@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v1/files")
 class FileController(val fileService: FileService) {
-    @GetMapping("/files/{filename:.+}")
+    @GetMapping("/{filename:.+}")
     fun serveFile(@PathVariable filename: String): ResponseEntity<Resource> {
         val file = fileService.loadAsResource(filename)
         return ResponseEntity
