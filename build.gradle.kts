@@ -28,7 +28,6 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
 }
 
@@ -41,4 +40,11 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar") {
+    enabled = false
+}
+
+tasks.getByName<Jar>("jar") {
+    enabled = true
 }
