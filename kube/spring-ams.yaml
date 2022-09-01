@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-ams-config
+  labels:
+    app: spring-ams
+data:
+  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ams
+  SPRING_DATASOURCE_USERNAME: amsadmin
+  SPRING_DATASOURCE_PASSWORD: ams123
+#  MAIL_SENDER_HOST: smtp.gmail.com
+#  MAIL_SENDER_PORT: 587
+  MAIL_SENDER_USERNAME: eam.dayan@gmail.com
+  MAIL_SENDER_PASSWORD: sjgobvbihgkfqlvp
+#  MAIL_SENDER_PROTOCOL: smtp
+#  MAIL_SENDER_DEBUG: true
+#  MAIL_SENDER_AUTH: true
+#  MAIL_SENDER_STARTTLS_ENABLE: true
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-ams-service
+spec:
+  selector: # looks for the pods to expose
+    app: spring-ams-app # every pod with this label will be exposed through this service
+  ports:
+    #    - protocol: "TCP"
+    - port: 80 # listens for incoming requests from users
+      nodePort: 31533
+      targetPort: 8080  # looks for the port of the running container
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-ams-app
+spec:
+  selector:
+    matchLabels:
+      app: spring-ams-app
+  replicas: 2 # number of replicas that will be created
+  template:
+    metadata:
+      labels:
+        app: spring-ams-app
+    spec:
+      containers:
+        - name: spring-ams-app
+          image: saintrivers/ams-api:2.1.4 # Image that will be used to containers in the cluster
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: spring-ams-config
+          ports:
+            # the target port of the service will map to this
+            - containerPort: 8080 # The port that the container is running on in the cluster

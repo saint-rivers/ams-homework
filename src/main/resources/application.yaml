@@ -10,19 +10,19 @@ spring:
       ddl-auto: update
     show-sql: true
   mail:
-    host: ${MAIL_SENDER_HOST}
-    port: ${MAIL_SENDER_PORT}
+    host: ${MAIL_SENDER_HOST:smtp.gmail.com}
+    port: ${MAIL_SENDER_PORT:587}
     username: ${MAIL_SENDER_USERNAME}
     password: ${MAIL_SENDER_PASSWORD} # go to myaccount.gmail.com > security > app password > create an app and password
     properties:
       mail:
         transport:
-          protocol: ${MAIL_SENDER_PROTOCOL}
-        debug: ${MAIL_SENDER_DEBUG}
+          protocol: ${MAIL_SENDER_PROTOCOL:smtp}
+        debug: ${MAIL_SENDER_DEBUG:true}
         smtp:
-          auth: ${MAIL_SENDER_AUTH}
+          auth: ${MAIL_SENDER_AUTH:true}
           starttls:
-            enable: ${MAIL_SENDER_STARTTLS_ENABLE}
+            enable: ${MAIL_SENDER_STARTTLS_ENABLE:true}
 
 files:
   storage:
