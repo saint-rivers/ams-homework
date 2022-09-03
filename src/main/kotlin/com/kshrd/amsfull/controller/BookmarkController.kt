@@ -20,7 +20,7 @@ class BookmarkController(val bookmarkService: BookmarkService) {
 
         return ResponseEntity.ok().body(
             ApiResponse.SuccessWithPayload(
-                message = "added bookmark successfully for user: ",
+                message = "added bookmark successfully for user: $userId",
                 status = "201",
                 payload = payload
             )

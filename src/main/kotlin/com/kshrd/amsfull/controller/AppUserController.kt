@@ -15,7 +15,7 @@ class AppUserController(val appUserService: AppUserService) {
     fun create(@RequestBody appUserRequest: AppUserRequest) =
         ResponseEntity.ok().body(
             ApiResponse.SuccessWithPayload(
-                message = "",
+                message = "created user",
                 status = "201",
                 payload = appUserService.create(appUserRequest)
             )
@@ -32,7 +32,7 @@ class AppUserController(val appUserService: AppUserService) {
         val payload = appUserService.fetchBy(page - 1, size)
         return ResponseEntity.ok().body(
             ApiResponse.SuccessWithPage(
-                message = "successfully fetched teachers",
+                message = "successfully fetched users",
                 status = "200",
                 payload = payload.content,
                 page = page,
@@ -47,7 +47,7 @@ class AppUserController(val appUserService: AppUserService) {
     fun find(@PathVariable id: UUID): ResponseEntity<ApiResponse> {
         return ResponseEntity.ok().body(
             ApiResponse.SuccessWithPayload(
-                message = "teacher found",
+                message = "user found",
                 status = "200",
                 payload = appUserService.findById(id)
             )
@@ -58,7 +58,7 @@ class AppUserController(val appUserService: AppUserService) {
     fun update(@RequestBody appUserRequest: AppUserRequest, @PathVariable id: UUID) =
         ResponseEntity.ok().body(
             ApiResponse.SuccessWithPayload(
-                message = "updated teacher successfully",
+                message = "updated user successfully",
                 status = "200",
                 payload = appUserService.update(id, appUserRequest)
             )
@@ -69,7 +69,7 @@ class AppUserController(val appUserService: AppUserService) {
         appUserService.deleteById(id)
         return ResponseEntity.ok().body(
             ApiResponse.Success(
-                message = "deleted article with id: $id",
+                message = "deleted user with id: $id",
                 status = "200",
             )
         )

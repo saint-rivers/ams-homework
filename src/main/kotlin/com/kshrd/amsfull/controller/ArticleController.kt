@@ -36,7 +36,7 @@ class ArticleController(val articleService: ArticleService) {
         val payload: Page<ArticleDto> = articleService.fetchPublished(page - 1, size)
         return ResponseEntity.ok().body(
             ApiResponse.SuccessWithPage(
-                message = "successfully fetched categories",
+                message = "successfully fetched published categories",
                 status = "200",
                 payload = payload.content,
                 page = page,
@@ -114,7 +114,7 @@ class ArticleController(val articleService: ArticleService) {
     fun update(@RequestBody article: ArticleRequest, @PathVariable id: UUID) =
         ResponseEntity.ok().body(
             ApiResponse.SuccessWithPayload(
-                message = "created a new article",
+                message = "updated article with id $id",
                 status = "201",
                 payload = articleService.update(id, article)
             )
