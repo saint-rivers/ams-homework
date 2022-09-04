@@ -7,5 +7,5 @@ interface FileService {
 
     fun loadAsResource(filename: String): Resource
 
-    fun upload(files: List<MultipartFile>)
+    fun upload(files: List<MultipartFile>): List<String>
 }

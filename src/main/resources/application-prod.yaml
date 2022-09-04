@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: ams-application
+  datasource:
+    url: jdbc:postgresql://db.ams.com:5432/ams
+    username: amsadmin
+    password: ams123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+#  web:
+#    resources:
+#      static-locations: opt/resources/files/
+files:
+  storage:
+    path: file:/opt/resources/files
+server:
+  name: http://localhost:6654

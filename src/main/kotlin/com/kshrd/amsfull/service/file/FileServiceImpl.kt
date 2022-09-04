@@ -21,9 +21,9 @@ class FileServiceImpl(
     private val storagePath: String
 ) : FileService {
 
-    var rootLocation: Path = Paths.get(storagePath)
+    var rootLocation: Path = Paths.get(storagePath.substring(6))
 
-    fun save(file: MultipartFile) {
+    fun save(file: MultipartFile): String {
         val filename = file.originalFilename?.let { StringUtils.cleanPath(it) }
         val extension = File(filename!!).extension
         try {
@@ -39,8 +39,11 @@ class FileServiceImpl(
         } catch (_: Exception) {
         }
 
-        val path = rootLocation.resolve("${UUID.randomUUID()}.${extension}")
+        val newName = "${UUID.randomUUID()}.${extension}"
+        val path = rootLocation.resolve(newName)
         Files.copy(file.inputStream, path, StandardCopyOption.REPLACE_EXISTING)
+
+        return newName
     }
 
     override fun loadAsResource(filename: String): Resource {
@@ -54,8 +57,8 @@ class FileServiceImpl(
         }
     }
 
-    override fun upload(files: List<MultipartFile>) {
-        files.forEach {
+    override fun upload(files: List<MultipartFile>): List<String> {
+        return files.map {
             save(it)
         }
     }

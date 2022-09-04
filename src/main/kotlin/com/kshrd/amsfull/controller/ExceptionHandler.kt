@@ -10,7 +10,7 @@ class ExceptionHandler {
     @ExceptionHandler(value = [Exception::class])
     fun handleException(e: Exception) =
         ApiResponse.Failure(
-            message = e.localizedMessage,
+            message = e.toString(),
             status = "500"
         )
 
