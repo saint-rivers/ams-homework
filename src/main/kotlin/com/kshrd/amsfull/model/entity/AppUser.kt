@@ -1,20 +1,20 @@
 package com.kshrd.amsfull.model.entity
 
 import com.kshrd.amsfull.model.dto.AppUserDto
-import com.kshrd.amsfull.model.enum.UserRole
+import org.hibernate.annotations.Type
 import java.util.*
 import javax.persistence.*
 
 @Entity
 @Table(name = "app_users")
-open class AppUser(_name: String, _roles: List<UserRole>) {
+open class AppUser(username: String, email: String, profile: String, telephone: String) {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     open var id: UUID? = null
 
-    @Column(name = "name", nullable = false, unique = true)
-    open var name: String? = _name
+    @Column(name = "username", nullable = false, unique = true)
+    open var username: String? = username
 
     @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH])
     @JoinTable(
@@ -30,13 +30,26 @@ open class AppUser(_name: String, _roles: List<UserRole>) {
         joinColumns = [JoinColumn(name = "app_user_id")],
         inverseJoinColumns = [JoinColumn(name = "user_role_id")]
     )
-    open var userRoles: MutableSet<com.kshrd.amsfull.model.entity.UserRole> = mutableSetOf()
+    open var userRoles: MutableSet<UserRole> = mutableSetOf()
 
-    fun toDto() = name?.let {
+    @Column(name = "email", unique = true)
+    open var email: String? = email
+
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "profile_picture_url", nullable = false)
+    open var profile: String? = profile
+
+    @Column(name = "telephone", unique = true)
+    open var telephone: String? = telephone
+
+    fun toDto() = username?.let {
         AppUserDto(
             id = id!!,
-            name = it,
-            roles = userRoles.mapNotNull { role -> role.roleName }.toSet()
+            username = it,
+            email = email!!,
+            profile = profile!!,
+            telephone = telephone!!,
+            roles = userRoles.mapNotNull { role -> role.roleName }.toSet(),
         )
     }
 

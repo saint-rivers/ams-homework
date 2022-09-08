@@ -3,20 +3,45 @@ package com.kshrd.amsfull.model.request
 import com.kshrd.amsfull.exception.InvalidRoleException
 import com.kshrd.amsfull.model.entity.AppUser
 import com.kshrd.amsfull.model.enum.UserRole
+import com.kshrd.amsfull.service.validator.isEmail
+import com.kshrd.amsfull.service.validator.isUri
+import com.kshrd.amsfull.service.validator.isUserName
 import java.io.Serializable
+import java.lang.IllegalStateException
 
 data class AppUserRequest(
-    val name: String,
+    val username: String,
+    val email: String,
+    val profile: String,
+    val telephone: String,
     val roles: MutableSet<String> = mutableSetOf()
 ) : Serializable {
     fun toEntity() = AppUser(
-        _name = name,
-        _roles = try {
-            roles.map { UserRole.valueOf(it) }
+        username = username,
+        email = email,
+        profile = profile,
+        telephone = telephone,
+    )
+
+    private fun containsValidUserRoles(): Boolean {
+        val data: List<UserRole>
+        try {
+            data = roles.map { UserRole.valueOf(it) }
+            return data.isNotEmpty()
         } catch (e: Exception) {
             throw InvalidRoleException(
                 "valid roles are ${UserRole.READER} and ${UserRole.TEACHER}"
             )
         }
-    )
+    }
+
+    fun isValid(): Boolean {
+        if (!username.isUserName()) throw IllegalStateException("username must not contain spaces or special characters")
+        if (!email.isEmail()) throw IllegalStateException("invalid email")
+        if (!profile.isUri()) throw IllegalStateException("invalid profile picture url")
+//        if (!telephone.isTelephone()) throw IllegalStateException("invalid phone number")
+        containsValidUserRoles()
+
+        return true
+    }
 }

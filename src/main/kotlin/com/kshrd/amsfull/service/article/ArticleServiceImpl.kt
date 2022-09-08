@@ -19,6 +19,7 @@ class ArticleServiceImpl(
     val appUserRepository: AppUserRepository,
 ) : ArticleService {
     override fun createArticle(article: ArticleRequest): ArticleDto {
+
         val articleReq = article.toEntity()
 
         // set categories for the article

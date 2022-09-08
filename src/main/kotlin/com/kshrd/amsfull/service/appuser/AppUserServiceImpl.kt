@@ -14,7 +14,7 @@ class AppUserServiceImpl(
     val userRoleRepository: UserRoleRepository
 ) : AppUserService {
     override fun create(appUserRequest: AppUserRequest): AppUserDto {
-        val teacher = appUserRequest.toEntity()
+        val teacher = if (appUserRequest.isValid()) appUserRequest.toEntity() else throw RuntimeException("something went wrong")
         val validRoles = appUserRequest.roles.map { userRoleRepository.findByRoleName(it).get() }.toMutableSet()
         teacher.userRoles = validRoles
         return appUserRepository.save(teacher).toDto()!!
