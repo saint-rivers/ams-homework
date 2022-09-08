@@ -1,8 +1,10 @@
 package com.kshrd.amsfull.service.appuser
 
+import com.kshrd.amsfull.exception.UserExistsException
 import com.kshrd.amsfull.model.dto.AppUserDto
 import com.kshrd.amsfull.model.request.AppUserRequest
 import com.kshrd.amsfull.service.article.UserRoleRepository
+import org.springframework.data.domain.Example
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -14,7 +16,12 @@ class AppUserServiceImpl(
     val userRoleRepository: UserRoleRepository
 ) : AppUserService {
     override fun create(appUserRequest: AppUserRequest): AppUserDto {
-        val teacher = if (appUserRequest.isValid()) appUserRequest.toEntity() else throw RuntimeException("something went wrong")
+
+        appUserRequest.validate()
+        val teacher = appUserRequest.toEntity()
+
+        if (appUserRepository.findAll(Example.of(teacher)).size > 0) throw UserExistsException()
+
         val validRoles = appUserRequest.roles.map { userRoleRepository.findByRoleName(it).get() }.toMutableSet()
         teacher.userRoles = validRoles
         return appUserRepository.save(teacher).toDto()!!

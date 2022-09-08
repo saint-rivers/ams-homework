@@ -13,4 +13,5 @@ interface AppUserRepository : JpaRepository<AppUser, UUID> {
     @Query("select u.bookmarkedArticles from AppUser u where u.id = :userId")
 //    @Query("select u.bookmarkedArticles from AppUser u join u.bookmarkedArticles where u.id = :userId")
     fun findBookmarksOfUser(userId: UUID, pageable: Pageable): Page<Article>
+
 }

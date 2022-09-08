@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page
 import java.util.UUID
 
 interface ArticleService {
-    fun createArticle(article: ArticleRequest): ArticleDto
+    fun createArticle(articleRequest: ArticleRequest): ArticleDto
     fun fetchBy(page: Int, size: Int): Page<ArticleDto>
     fun findByArticleId(id: UUID): ArticleDto
     fun deleteById(id: UUID)

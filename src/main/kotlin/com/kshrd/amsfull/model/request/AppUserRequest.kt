@@ -6,6 +6,7 @@ import com.kshrd.amsfull.model.enum.UserRole
 import com.kshrd.amsfull.service.validator.isEmail
 import com.kshrd.amsfull.service.validator.isUri
 import com.kshrd.amsfull.service.validator.isUserName
+import io.swagger.v3.oas.annotations.Hidden
 import java.io.Serializable
 import java.lang.IllegalStateException
 
@@ -16,6 +17,15 @@ data class AppUserRequest(
     val telephone: String,
     val roles: MutableSet<String> = mutableSetOf()
 ) : Serializable {
+//    fun toEntity(): AppUser {
+//        return if (isValid()) AppUser(
+//            username = username,
+//            email = email,
+//            profile = profile,
+//            telephone = telephone,
+//        ) else throw DefaultException()
+//    }
+
     fun toEntity() = AppUser(
         username = username,
         email = email,
@@ -34,8 +44,12 @@ data class AppUserRequest(
             )
         }
     }
+    internal fun validate() {
+        isValid()
+    }
 
-    fun isValid(): Boolean {
+    @Hidden
+    private fun isValid(): Boolean {
         if (!username.isUserName()) throw IllegalStateException("username must not contain spaces or special characters")
         if (!email.isEmail()) throw IllegalStateException("invalid email")
         if (!profile.isUri()) throw IllegalStateException("invalid profile picture url")

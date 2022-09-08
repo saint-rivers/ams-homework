@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 class CategoryServiceImpl(val categoryRepository: CategoryRepository) : CategoryService {
     override fun create(categoryRequest: CategoryRequest): CategoryDto {
+        categoryRequest.validate()
         return categoryRepository.save(categoryRequest.toEntity()).toDto()
     }
 

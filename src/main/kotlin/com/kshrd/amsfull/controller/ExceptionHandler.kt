@@ -1,6 +1,7 @@
 package com.kshrd.amsfull.controller
 
 import com.kshrd.amsfull.model.response.ApiResponse
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -12,6 +13,13 @@ class ExceptionHandler {
     fun handleException(e: Exception) = ResponseEntity.internalServerError().body(
         ApiResponse.Failure(
             message = e.localizedMessage, status = "500"
+        )
+    )
+
+    @ExceptionHandler(value = [DuplicateKeyException::class])
+    fun handleUserExistsException(e: Exception) = ResponseEntity.internalServerError().body(
+        ApiResponse.Failure(
+            message = "${e.localizedMessage}. please check your request body.", status = "400"
         )
     )
 

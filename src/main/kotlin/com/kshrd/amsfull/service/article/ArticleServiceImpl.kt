@@ -18,23 +18,24 @@ class ArticleServiceImpl(
     val commentRepository: CommentRepository,
     val appUserRepository: AppUserRepository,
 ) : ArticleService {
-    override fun createArticle(article: ArticleRequest): ArticleDto {
+    override fun createArticle(articleRequest: ArticleRequest): ArticleDto {
 
-        val articleReq = article.toEntity()
+        articleRequest.validate()
+        val article = articleRequest.toEntity()
 
         // set categories for the article
-        articleReq.categories = article.categories
+        article.categories = articleRequest.categories
             .map { categoryRepository.findAllByNameStartsWith(it)[0] }
             .toMutableSet()
 
         // set teacher for the article
-        val fetchedTeacher = appUserRepository.findById(article.teacherId)
+        val fetchedTeacher = appUserRepository.findById(articleRequest.teacherId)
         if (fetchedTeacher.isPresent) {
-            articleReq.teacher = fetchedTeacher.get()
-        } else throw NoSuchElementException("cannot find teacher with id: ${article.teacherId}")
+            article.teacher = fetchedTeacher.get()
+        } else throw NoSuchElementException("cannot find teacher with id: ${articleRequest.teacherId}")
 
         // save all changes
-        return articleRepository.save(articleReq).toDto()!!
+        return articleRepository.save(article).toDto()!!
     }
 
     override fun fetchBy(page: Int, size: Int): Page<ArticleDto> {
