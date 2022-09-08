@@ -3,8 +3,8 @@ package com.kshrd.amsfull.controller
 import com.kshrd.amsfull.model.response.ApiResponse
 import com.kshrd.amsfull.service.file.FileService
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.core.io.ClassPathResource
 import org.springframework.core.io.InputStreamResource
+import org.springframework.core.io.PathResource
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -22,7 +22,7 @@ class FileController(
     @Value("\${files.storage.path}") val storagePath: String,
 
     ) {
-//    @GetMapping("/{filename:.+}")
+//    @GetMapping("/download/{filename:.+}")
 //    fun serveFile(@PathVariable filename: String): ResponseEntity<Resource> {
 //        val file = fileService.loadAsResource(filename)
 //        return ResponseEntity
@@ -32,12 +32,12 @@ class FileController(
 //    }
 
     @GetMapping(
-        value = ["/{filename}"],
+        value = ["/view/{filename}"],
         produces = [MediaType.IMAGE_JPEG_VALUE]
     )
     fun getImage(@PathVariable filename: String): ResponseEntity<InputStreamResource> {
 
-        val imgFile = ClassPathResource("${storagePath}/${filename}")
+        val imgFile = PathResource("${storagePath}/${filename}")
 
         return ResponseEntity
             .ok()
@@ -53,7 +53,7 @@ class FileController(
             ApiResponse.SuccessWithPayload(
                 message = "successfully uploaded file",
                 status = "201",
-                payload = data.map { "${url}/api/v1/files/${it}" }
+                payload = data.map { "${url}/api/v1/files/view/${it}" }
             )
         )
     }

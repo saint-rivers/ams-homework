@@ -11,23 +11,6 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-#  mail:
-#    host: ${MAIL_SENDER_HOST:smtp.gmail.com}
-#    port: ${MAIL_SENDER_PORT:587}
-#    username: ${MAIL_SENDER_USERNAME}
-#    password: ${MAIL_SENDER_PASSWORD} # go to myaccount.gmail.com > security > app password > create an app and password
-#    properties:
-#      mail:
-#        transport:
-#          protocol: ${MAIL_SENDER_PROTOCOL:smtp}
-#        debug: ${MAIL_SENDER_DEBUG:true}
-#        smtp:
-#          auth: ${MAIL_SENDER_AUTH:true}
-#          starttls:
-#            enable: ${MAIL_SENDER_STARTTLS_ENABLE:true}
-#  web:
-#    resources:
-#      static-locations: classpath:/images/
   servlet:
     multipart:
       max-file-size: 20MB

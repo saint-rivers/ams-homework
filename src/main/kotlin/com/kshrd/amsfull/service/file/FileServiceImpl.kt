@@ -21,7 +21,7 @@ class FileServiceImpl(
     private val storagePath: String
 ) : FileService {
 
-    var rootLocation: Path = Paths.get(storagePath.substring(6))
+    var rootLocation: Path = Paths.get(storagePath)
 
     fun save(file: MultipartFile): String {
         val filename = file.originalFilename?.let { StringUtils.cleanPath(it) }

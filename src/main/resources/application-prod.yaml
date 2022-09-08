@@ -9,11 +9,9 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-#  web:
-#    resources:
-#      static-locations: opt/resources/files/
+
 files:
   storage:
-    path: file:/opt/resources/files
+    path: /opt/resources/files
 server:
-  name: http://localhost:6654
+  name: https://springams.hrd-edu.info
