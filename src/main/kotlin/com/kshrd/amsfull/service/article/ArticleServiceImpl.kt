@@ -5,7 +5,7 @@ import com.kshrd.amsfull.model.dto.CommentDto
 import com.kshrd.amsfull.model.request.ArticleRequest
 import com.kshrd.amsfull.model.request.CommentRequest
 import com.kshrd.amsfull.service.category.CategoryRepository
-import com.kshrd.amsfull.service.teacher.AppUserRepository
+import com.kshrd.amsfull.service.appuser.AppUserRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service

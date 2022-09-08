@@ -1,4 +1,4 @@
-package com.kshrd.amsfull.service.teacher
+package com.kshrd.amsfull.service.appuser
 
 import com.kshrd.amsfull.model.dto.AppUserDto
 import com.kshrd.amsfull.model.request.AppUserRequest

@@ -8,10 +8,12 @@ data class ArticleRequest(
     val title: String,
     val description: String,
     val categories: Set<String>,
-    val teacherId: UUID
+    val teacherId: UUID,
+    val isPublished: Boolean = false
 ) : Serializable {
     fun toEntity() = Article(
         title = title,
-        description = description
+        description = description,
+        isPublished = isPublished
     )
 }

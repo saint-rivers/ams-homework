@@ -19,7 +19,6 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
     )
     open var categories: MutableSet<Category> = mutableSetOf()
 
-
     @ManyToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "teacher_id", nullable = false)
     open var teacher: AppUser? = null

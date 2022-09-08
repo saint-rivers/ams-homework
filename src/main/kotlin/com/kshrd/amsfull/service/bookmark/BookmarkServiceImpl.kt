@@ -5,7 +5,7 @@ import com.kshrd.amsfull.model.entity.AppUser
 import com.kshrd.amsfull.model.entity.Article
 import com.kshrd.amsfull.model.request.BookmarkRequest
 import com.kshrd.amsfull.service.article.ArticleRepository
-import com.kshrd.amsfull.service.teacher.AppUserRepository
+import com.kshrd.amsfull.service.appuser.AppUserRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service

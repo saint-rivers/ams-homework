@@ -1,16 +1,22 @@
-package com.kshrd.amsfull.service.teacher
+package com.kshrd.amsfull.service.appuser
 
 import com.kshrd.amsfull.model.dto.AppUserDto
 import com.kshrd.amsfull.model.request.AppUserRequest
+import com.kshrd.amsfull.service.article.UserRoleRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class AppUserServiceImpl(val appUserRepository: AppUserRepository) : AppUserService {
+class AppUserServiceImpl(
+    val appUserRepository: AppUserRepository,
+    val userRoleRepository: UserRoleRepository
+) : AppUserService {
     override fun create(appUserRequest: AppUserRequest): AppUserDto {
         val teacher = appUserRequest.toEntity()
+        val validRoles = appUserRequest.roles.map { userRoleRepository.findByRoleName(it).get() }.toMutableSet()
+        teacher.userRoles = validRoles
         return appUserRepository.save(teacher).toDto()!!
     }
 

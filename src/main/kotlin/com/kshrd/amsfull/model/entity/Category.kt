@@ -2,13 +2,14 @@ package com.kshrd.amsfull.model.entity
 
 import com.kshrd.amsfull.model.dto.CategoryDto
 import org.hibernate.Hibernate
+import org.hibernate.annotations.Type
 import javax.persistence.*
 
 @Entity
 @Table(name = "categories")
-class Category(name: String) {
+class Category(name: String, imageUrl: String) {
 
-    constructor(id: Long, name: String) : this(name) {
+    constructor(id: Long, name: String, imageUrl: String) : this(name, imageUrl) {
         this.id = id
     }
 
@@ -20,7 +21,12 @@ class Category(name: String) {
     @Column(name = "name", nullable = false, unique = true, length = 100)
     var name: String? = name
 
-    @ManyToMany(mappedBy = "categories", cascade = [CascadeType.PERSIST, CascadeType.MERGE]) var articles: MutableSet<Article> = mutableSetOf()
+    @ManyToMany(mappedBy = "categories", cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    var articles: MutableSet<Article> = mutableSetOf()
+
+    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "image_url")
+    open var imageUrl: String? = imageUrl
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -31,6 +37,6 @@ class Category(name: String) {
     }
 
     override fun hashCode(): Int = javaClass.hashCode()
-    fun toDto(): CategoryDto = CategoryDto(id = id!!, name = name!!)
+    fun toDto(): CategoryDto = CategoryDto(id = id!!, name = name!!, imageUrl = imageUrl!!)
 
 }

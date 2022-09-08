@@ -2,7 +2,7 @@ package com.kshrd.amsfull.controller
 
 import com.kshrd.amsfull.model.request.AppUserRequest
 import com.kshrd.amsfull.model.response.ApiResponse
-import com.kshrd.amsfull.service.teacher.AppUserService
+import com.kshrd.amsfull.service.appuser.AppUserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*

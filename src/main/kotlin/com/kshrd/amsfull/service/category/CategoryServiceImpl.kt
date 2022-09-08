@@ -1,7 +1,6 @@
 package com.kshrd.amsfull.service.category
 
 import com.kshrd.amsfull.model.dto.CategoryDto
-import com.kshrd.amsfull.model.entity.Category
 import com.kshrd.amsfull.model.request.CategoryRequest
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -33,10 +32,7 @@ class CategoryServiceImpl(val categoryRepository: CategoryRepository) : Category
     }
 
     override fun update(id: Long, categoryRequest: CategoryRequest): CategoryDto {
-        val category = Category(
-            id = id,
-            name = categoryRequest.name
-        )
+        val category = categoryRequest.toEntity()
         return categoryRepository.save(category).toDto()
     }
 

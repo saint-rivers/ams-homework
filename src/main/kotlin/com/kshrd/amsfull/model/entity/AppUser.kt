@@ -7,7 +7,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "app_users")
-open class AppUser(_name: String, _role: UserRole) {
+open class AppUser(_name: String, _roles: List<UserRole>) {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -15,9 +15,6 @@ open class AppUser(_name: String, _role: UserRole) {
 
     @Column(name = "name", nullable = false, unique = true)
     open var name: String? = _name
-
-    @Enumerated(value = EnumType.STRING)
-    open var role: UserRole = _role
 
     @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH])
     @JoinTable(
@@ -27,11 +24,19 @@ open class AppUser(_name: String, _role: UserRole) {
     )
     open var bookmarkedArticles: MutableSet<Article> = mutableSetOf()
 
+    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    @JoinTable(
+        name = "user_roles",
+        joinColumns = [JoinColumn(name = "app_user_id")],
+        inverseJoinColumns = [JoinColumn(name = "user_role_id")]
+    )
+    open var userRoles: MutableSet<com.kshrd.amsfull.model.entity.UserRole> = mutableSetOf()
+
     fun toDto() = name?.let {
         AppUserDto(
             id = id!!,
             name = it,
-            role = role
+            roles = userRoles.mapNotNull { role -> role.roleName }.toSet()
         )
     }
 
