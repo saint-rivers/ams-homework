@@ -1,6 +1,5 @@
 package com.kshrd.amsfull.model.entity
 
-import com.kshrd.amsfull.model.Document
 import com.kshrd.amsfull.model.dto.ArticleDto
 import com.kshrd.amsfull.model.dto.BookmarkDto
 import org.hibernate.Hibernate
@@ -8,10 +7,10 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "articles")
-open class Article(title: String, description: String, isPublished: Boolean = false) :
-    Document(title, description, isPublished) {
+open class Article(title: String, description: String, isPublished: Boolean = false, thumbnail: String) :
+    Document(title = title, description = description, isPublished = isPublished, thumbnail = thumbnail) {
 
-    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH])
     @JoinTable(
         name = "article_categories",
         joinColumns = [JoinColumn(name = "article_id")],
@@ -39,20 +38,21 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
     fun toDto() = id?.let {
         ArticleDto(
             id = it,
-            title = title,
+            title = title!!,
             description = description,
             categories = categories.map { cat -> cat.toDto() }.toSet(),
             isPublished = isPublished == true,
             teacher = teacher?.toDto()!!,
-            comments = comments.map { comment -> comment.toDto() }.toSet()
+            comments = comments.map { comment -> comment.toDto() }.toSet(),
+            thumbnail = thumbnail!!
         )
     }
 
     fun toBookmarkDto(): BookmarkDto {
         return BookmarkDto(
             articleId = id!!,
-            title = title,
-            description = description,
+            title = title!!,
+            description = description!!,
             teacher = teacher?.toDto()!!
         )
     }

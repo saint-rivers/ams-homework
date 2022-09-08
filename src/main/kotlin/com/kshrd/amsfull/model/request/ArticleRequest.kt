@@ -1,7 +1,6 @@
 package com.kshrd.amsfull.model.request
 
 import com.kshrd.amsfull.model.entity.Article
-import java.io.Serializable
 import java.util.UUID
 
 data class ArticleRequest(
@@ -9,11 +8,13 @@ data class ArticleRequest(
     val description: String,
     val categories: Set<String>,
     val teacherId: UUID,
-    val isPublished: Boolean = false
-) : Serializable {
+    val isPublished: Boolean = false,
+    val thumbnail: String
+)  {
     fun toEntity() = Article(
         title = title,
         description = description,
-        isPublished = isPublished
+        isPublished = isPublished,
+        thumbnail = thumbnail
     )
 }

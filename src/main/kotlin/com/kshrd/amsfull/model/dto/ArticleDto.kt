@@ -7,8 +7,9 @@ data class ArticleDto(
     val id: UUID,
     val title: String,
     val description: String? = null,
-    val isPublished: Boolean = false,
+    val isPublished: Boolean,
     var categories: Set<CategoryDto> = emptySet(),
     var teacher: AppUserDto,
-    val comments: Set<CommentDto> = emptySet()
+    val comments: Set<CommentDto> = emptySet(),
+    val thumbnail: String
 ) : Serializable
