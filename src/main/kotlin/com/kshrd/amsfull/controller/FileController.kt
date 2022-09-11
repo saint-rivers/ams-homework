@@ -46,8 +46,8 @@ class FileController(
     }
 
     @PostMapping(consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    fun upload(@RequestPart files: List<MultipartFile>): ResponseEntity<ApiResponse> {
-        val data = fileService.upload(files)
+    fun upload(@RequestPart("files") files: Array<MultipartFile>): ResponseEntity<ApiResponse> {
+        val data = fileService.upload(files.toList())
 
         return ResponseEntity.ok().body(
             ApiResponse.SuccessWithPayload(
