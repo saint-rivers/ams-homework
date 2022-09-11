@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: default
   application:
     name: ams-application
   datasource:
@@ -15,6 +13,8 @@ spring:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
+  profiles:
+    active: default
 
 files:
   storage:
