@@ -16,12 +16,10 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
         joinColumns = [JoinColumn(name = "article_id", foreignKey = ForeignKey(name = "fk_article_id"))],
         inverseJoinColumns = [JoinColumn(name = "category_id", foreignKey = ForeignKey(name = "fk_category_id"))]
     )
-//    @OnDelete(action = OnDeleteAction.CASCADE)
     open var categories: MutableSet<Category> = mutableSetOf()
 
     @ManyToOne(cascade = [CascadeType.MERGE])
     @JoinColumn(name = "teacher_id", nullable = false, foreignKey = ForeignKey(name = "fk_teacher_id"))
-//    @OnDelete(action = OnDeleteAction.CASCADE)
     open var teacher: AppUser? = null
 
     @OneToMany(mappedBy = "article", orphanRemoval = true)

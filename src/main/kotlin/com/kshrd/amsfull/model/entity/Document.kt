@@ -17,10 +17,10 @@ open class Document(
     @Column(name = "id", nullable = false)
     open var id: UUID? = null
 
-    @Type(type = "org.hibernate.type.TextType")
     @Column(name = "title")
     open var title: String? = title
 
+    @Type(type = "org.hibernate.type.TextType")
     @Column(name = "description")
     open var description: String? = description
 
