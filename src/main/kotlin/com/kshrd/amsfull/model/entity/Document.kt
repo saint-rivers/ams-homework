@@ -21,7 +21,7 @@ open class Document(
     open var title: String? = title
 
     @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     open var description: String? = description
 
     @Column(name = "is_published", nullable = false)
