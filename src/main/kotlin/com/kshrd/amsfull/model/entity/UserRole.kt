@@ -1,17 +1,16 @@
 package com.kshrd.amsfull.model.entity
 
-import org.hibernate.Hibernate
 import javax.persistence.*
 
 @Entity
-@Table(name = "roles")
+@Table(name = "roles", uniqueConstraints = [UniqueConstraint(name = "uk_role_name", columnNames = ["role_name"])])
 open class UserRole(roleName: String) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     open var id: Long? = null
 
-    @Column(name = "role_name", nullable = false, unique = true, length = 100)
+    @Column(name = "role_name", nullable = false, length = 100)
     open var roleName: String? = roleName
 
 //    @ManyToMany(mappedBy = "userRoles", cascade = [CascadeType.PERSIST, CascadeType.MERGE])
@@ -25,4 +24,13 @@ open class UserRole(roleName: String) {
 //    }
 
     override fun hashCode(): Int = javaClass.hashCode()
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is UserRole) return false
+
+        if (id != other.id) return false
+        if (roleName != other.roleName) return false
+
+        return true
+    }
 }

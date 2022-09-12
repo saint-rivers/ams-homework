@@ -16,8 +16,8 @@ open class Comment(_caption: String) {
     @Column(name = "caption")
     open var caption: String = _caption
 
-    @ManyToOne(cascade = [CascadeType.ALL], optional = false)
-    @JoinColumn(name = "article_id", nullable = false)
+    @ManyToOne(cascade = [CascadeType.MERGE], optional = false)
+    @JoinColumn(name = "article_id", nullable = false, foreignKey = ForeignKey(name = "fk_article_id"))
     open var article: Article? = null
 
     override fun equals(other: Any?): Boolean {
