@@ -3,6 +3,7 @@ package com.kshrd.amsfull.model.entity
 import com.kshrd.amsfull.model.dto.ArticleDto
 import com.kshrd.amsfull.model.dto.BookmarkDto
 import org.hibernate.Hibernate
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -18,13 +19,18 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
     )
     open var categories: MutableSet<Category> = mutableSetOf()
 
-    @ManyToOne(cascade = [CascadeType.MERGE])
+    @ManyToOne(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JoinColumn(name = "teacher_id", nullable = false, foreignKey = ForeignKey(name = "fk_teacher_id"))
     open var teacher: AppUser? = null
 
     @OneToMany(mappedBy = "article", orphanRemoval = true)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
     open var comments: MutableSet<Comment> = mutableSetOf()
+
+    @Column(name = "created_date")
+    open var createdDate: LocalDateTime? = null
+
+    @Column(name = "last_modified")
+    open var lastModified: LocalDateTime? = null
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -45,7 +51,9 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
             isPublished = isPublished == true,
             teacher = teacher?.toDto()!!,
             comments = comments.map { comment -> comment.toDto() }.toSet(),
-            thumbnail = thumbnail!!
+            thumbnail = thumbnail!!,
+            createdDate = createdDate!!,
+            lastModified = lastModified!!
         )
     }
 

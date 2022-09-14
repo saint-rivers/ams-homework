@@ -9,6 +9,7 @@ import com.kshrd.amsfull.service.appuser.AppUserRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import java.util.*
 
 @Service
@@ -22,6 +23,8 @@ class ArticleServiceImpl(
 
         articleRequest.validate()
         val article = articleRequest.toEntity()
+        article.createdDate = LocalDateTime.now()
+        article.lastModified = article.createdDate
 
         // set categories for the article
         article.categories = articleRequest.categories
@@ -55,10 +58,17 @@ class ArticleServiceImpl(
 
     override fun update(id: UUID, req: ArticleRequest): ArticleDto {
         val article = req.toEntity()
+
+        val articleData = articleRepository.findById(id)
+
         article.id = id
+        article.teacher = appUserRepository.findById(req.teacherId).get()
         article.categories = req.categories
             .map { categoryRepository.findAllByNameStartsWith(it)[0] }
             .toMutableSet()
+
+        article.createdDate = articleData.get().createdDate
+        article.lastModified = LocalDateTime.now()
         return articleRepository.save(article).toDto()!!
     }
 

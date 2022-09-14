@@ -1,6 +1,7 @@
 package com.kshrd.amsfull.model.dto
 
 import java.io.Serializable
+import java.time.LocalDateTime
 import java.util.*
 
 data class ArticleDto(
@@ -11,5 +12,7 @@ data class ArticleDto(
     var categories: Set<CategoryDto> = emptySet(),
     var teacher: AppUserDto,
     val comments: Set<CommentDto> = emptySet(),
-    val thumbnail: String
+    val thumbnail: String,
+    val createdDate: LocalDateTime,
+    val lastModified: LocalDateTime
 ) : Serializable
