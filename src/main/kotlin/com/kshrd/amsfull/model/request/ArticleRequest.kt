@@ -2,7 +2,7 @@ package com.kshrd.amsfull.model.request
 
 import com.kshrd.amsfull.exception.InvalidUriException
 import com.kshrd.amsfull.model.entity.Article
-import com.kshrd.amsfull.service.validator.isUri
+import com.kshrd.amsfull.service.validator.isUrl
 import io.swagger.v3.oas.annotations.Hidden
 import java.util.UUID
 
@@ -28,7 +28,7 @@ data class ArticleRequest(
     }
 
     private fun isValid(): Boolean {
-        if (!thumbnail.isUri()) throw InvalidUriException()
+        if (!thumbnail.isUrl()) throw InvalidUriException()
         return true
     }
 }

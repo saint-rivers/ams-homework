@@ -4,7 +4,7 @@ import com.kshrd.amsfull.exception.InvalidRoleException
 import com.kshrd.amsfull.model.entity.AppUser
 import com.kshrd.amsfull.model.enum.UserRole
 import com.kshrd.amsfull.service.validator.isEmail
-import com.kshrd.amsfull.service.validator.isUri
+import com.kshrd.amsfull.service.validator.isUrl
 import com.kshrd.amsfull.service.validator.isUserName
 import io.swagger.v3.oas.annotations.Hidden
 import java.io.Serializable
@@ -52,7 +52,7 @@ data class AppUserRequest(
     private fun isValid(): Boolean {
         if (!username.isUserName()) throw IllegalStateException("username must not contain spaces or special characters")
         if (!email.isEmail()) throw IllegalStateException("invalid email")
-        if (!profile.isUri()) throw IllegalStateException("invalid profile picture url")
+        if (!profile.isUrl()) throw IllegalStateException("invalid profile picture url")
 //        if (!telephone.isTelephone()) throw IllegalStateException("invalid phone number")
         containsValidUserRoles()
 
