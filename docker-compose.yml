@@ -32,5 +32,5 @@ services:
       - ./build/libs/ams-full-0.0.1-SNAPSHOT.jar:/root.jar
       - /opt/resources/files:/opt/resources/files
     environment:
-      SPRING_PROFILES_ACTIVE: prod
+      SPRING_PROFILES_ACTIVE: default,prod
 

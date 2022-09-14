@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://db.ams.com:5432/ams
+    url: jdbc:postgresql://localhost:5439/ams
     username: amsadmin
     password: ams123
   jpa:
@@ -10,7 +10,7 @@ spring:
 
 files:
   storage:
-    path: /opt/resources/files
+    path: src/main/resources/images
 
 server:
-  name: https://springams.hrd-edu.info
+  name: http://localhost:8080
