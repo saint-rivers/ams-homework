@@ -26,10 +26,10 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
     @OneToMany(mappedBy = "article", orphanRemoval = true)
     open var comments: MutableSet<Comment> = mutableSetOf()
 
-    @Column(name = "created_date")
+    @Column(name = "created_date", nullable = false)
     open var createdDate: LocalDateTime? = null
 
-    @Column(name = "last_modified")
+    @Column(name = "last_modified", nullable = false)
     open var lastModified: LocalDateTime? = null
 
     override fun equals(other: Any?): Boolean {
