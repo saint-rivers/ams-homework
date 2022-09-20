@@ -26,7 +26,7 @@ class BookmarkServiceImpl(
 
     override fun fetchAllBookmarks(userId: UUID, page: Int, size: Int): Page<BookmarkDto> {
         if (appUserRepository.findById(userId).isEmpty)
-            throw NoSuchElementException("cannot find user id:$userId")
+            throw NoSuchElementException("cannot find user id: $userId")
 
         return appUserRepository
             .findBookmarksOfUser(userId, PageRequest.of(page, size))
@@ -40,7 +40,7 @@ class BookmarkServiceImpl(
         if (savedUser.bookmarkedArticles.contains(article)) throw IllegalStateException("Unable to remove article id: $articleId")
     }
 
-    fun isExistingUserAndArticle(userId: UUID, articleId: UUID): Pair<AppUser, Article> {
+    private fun isExistingUserAndArticle(userId: UUID, articleId: UUID): Pair<AppUser, Article> {
         val fetchedUser = appUserRepository.findById(userId)
         val fetchedArticle = articleRepository.findById(articleId)
 

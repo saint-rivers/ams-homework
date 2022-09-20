@@ -26,7 +26,7 @@ open class AppUser(username: String, email: String, profile: String, telephone: 
     @Column(name = "username", nullable = false)
     open var username: String? = username
 
-    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH])
+    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JoinTable(
         name = "user_bookmarked_articles",
         joinColumns = [JoinColumn(name = "app_user_id", foreignKey = ForeignKey(name = "fk_user_id"))],
