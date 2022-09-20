@@ -62,7 +62,8 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
             articleId = id!!,
             title = title!!,
             description = description!!,
-            teacher = teacher?.toDto()!!
+            teacher = teacher?.toDto()!!,
+            thumbnail = thumbnail!!
         )
     }
 
