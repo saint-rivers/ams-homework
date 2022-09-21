@@ -7,6 +7,7 @@ import com.kshrd.amsfull.model.request.BookmarkRequest
 import com.kshrd.amsfull.service.article.ArticleRepository
 import com.kshrd.amsfull.service.appuser.AppUserRepository
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import java.util.*
@@ -28,9 +29,16 @@ class BookmarkServiceImpl(
         if (appUserRepository.findById(userId).isEmpty)
             throw NoSuchElementException("cannot find user id: $userId")
 
-        return appUserRepository
-            .findBookmarksOfUser(userId, PageRequest.of(page, size))
-            .map { it.toBookmarkDto() }
+//        val res = appUserRepository
+//            .findBookmarksOfUser(userId, PageRequest.of(page, size))
+
+        val res = appUserRepository.findById(userId).get().bookmarkedArticles
+        val payload = res.map { it.toBookmarkDto() }
+        val pageable = PageRequest.of(page, size)
+        val start = pageable.offset.toInt()
+        val end = (start + pageable.pageSize).toLong().coerceAtMost(payload.size.toLong()).toInt()
+
+        return PageImpl<BookmarkDto>(payload.subList(start, end), pageable, payload.size.toLong())
     }
 
     override fun remove(userId: UUID, articleId: UUID) {

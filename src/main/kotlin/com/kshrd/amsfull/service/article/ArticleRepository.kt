@@ -13,4 +13,7 @@ interface ArticleRepository : JpaRepository<Article, UUID> {
 
     @Query("select a from Article a where a.isPublished = true")
     fun findAllPublishedArticles(pageable: Pageable): Page<Article>
+
+//    @Query("select a from Article a join AppUser u where ")
+//    fun findBookmarkedArticles(userId: UUID, pageable: Pageable): Page<Article>
 }
