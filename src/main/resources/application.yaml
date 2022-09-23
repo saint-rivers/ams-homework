@@ -13,3 +13,7 @@ springdoc:
   swagger-ui:
     operationsSorter: method
     tagsSorter: alpha
+
+logging:
+  file:
+    name: ${LOG_FILE:ams-kshrd.log}
