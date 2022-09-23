@@ -14,3 +14,7 @@ files:
 
 server:
   name: https://springams.hrd-edu.info
+
+logging:
+  file:
+    name: ${LOG_FILE:/opt/ams-kshrd.log}

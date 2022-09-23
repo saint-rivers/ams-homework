@@ -14,3 +14,7 @@ files:
 
 server:
   name: http://localhost:8080
+
+logging:
+  file:
+    name: ${LOG_FILE:ams-kshrd.log}
