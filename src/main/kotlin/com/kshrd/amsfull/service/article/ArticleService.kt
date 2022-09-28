@@ -16,4 +16,5 @@ interface ArticleService {
     fun fetchPublished(page: Int, size: Int): Page<ArticleDto>
     fun addComment(id: UUID, commentRequest: CommentRequest): CommentDto
     fun fetchCommentsOf(articleId: UUID): List<CommentDto>
+    fun publishArticle(id: UUID)
 }

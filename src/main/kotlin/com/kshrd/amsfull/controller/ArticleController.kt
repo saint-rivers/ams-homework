@@ -120,4 +120,15 @@ class ArticleController(val articleService: ArticleService) {
             )
         )
 
+    @PatchMapping("/{id}/publish")
+    fun publishArticle(@PathVariable id: UUID): ResponseEntity<Any> {
+        articleService.publishArticle(id)
+        return ResponseEntity.ok().body(
+            ApiResponse.Success(
+                message = "successfully published article",
+                status = "200"
+            )
+        )
+    }
+
 }

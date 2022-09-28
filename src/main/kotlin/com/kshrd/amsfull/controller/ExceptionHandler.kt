@@ -1,5 +1,6 @@
 package com.kshrd.amsfull.controller
 
+import com.kshrd.amsfull.exception.ArticleAlreadyPublishedException
 import com.kshrd.amsfull.exception.GeneralNotFoundException
 import com.kshrd.amsfull.model.response.ApiResponse
 import org.springframework.dao.DuplicateKeyException
@@ -35,7 +36,14 @@ class ExceptionHandler {
     @ExceptionHandler(value = [NoSuchElementException::class])
     fun handleNoSuchElementException(e: Exception) = ResponseEntity.badRequest().body(
         ApiResponse.Failure(
-            message = e.localizedMessage, status = "206"
+            message = e.localizedMessage, status = "400"
+        )
+    )
+
+    @ExceptionHandler(value = [ArticleAlreadyPublishedException::class])
+    fun handleArticleAlreadyPublishedException(e: Exception) = ResponseEntity.badRequest().body(
+        ApiResponse.Failure(
+            message = e.localizedMessage, status = "400"
         )
     )
 

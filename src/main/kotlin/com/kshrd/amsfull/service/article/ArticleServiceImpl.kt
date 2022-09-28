@@ -1,5 +1,6 @@
 package com.kshrd.amsfull.service.article
 
+import com.kshrd.amsfull.exception.ArticleAlreadyPublishedException
 import com.kshrd.amsfull.exception.GeneralNotFoundException
 import com.kshrd.amsfull.model.dto.ArticleDto
 import com.kshrd.amsfull.model.dto.CommentDto
@@ -115,6 +116,17 @@ class ArticleServiceImpl(
             val comments = commentRepository.findAllByArticle(article.get())
             return comments.map { it.toDto() }
         } else throw NoSuchElementException("cannot find article $articleId")
+    }
+
+    override fun publishArticle(id: UUID) {
+        val article = articleRepository.findById(id)
+        if (article.isEmpty) throw GeneralNotFoundException(_resourceName = "article")
+
+        val updatedArticle = article.get()
+        if (updatedArticle.isPublished!!) throw ArticleAlreadyPublishedException()
+
+        updatedArticle.isPublished = true
+        articleRepository.save(updatedArticle)
     }
 
 
