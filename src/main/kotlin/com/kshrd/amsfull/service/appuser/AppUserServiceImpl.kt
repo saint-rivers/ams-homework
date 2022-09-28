@@ -1,6 +1,7 @@
 package com.kshrd.amsfull.service.appuser
 
-import com.kshrd.amsfull.exception.UserExistsException
+import com.kshrd.amsfull.exception.UserAlreadyExistsException
+import com.kshrd.amsfull.exception.UserNotFoundException
 import com.kshrd.amsfull.model.dto.AppUserDto
 import com.kshrd.amsfull.model.request.AppUserRequest
 import com.kshrd.amsfull.service.article.UserRoleRepository
@@ -20,7 +21,7 @@ class AppUserServiceImpl(
         appUserRequest.validate()
         val teacher = appUserRequest.toEntity()
 
-        if (appUserRepository.findAll(Example.of(teacher)).size > 0) throw UserExistsException()
+        if (appUserRepository.findAll(Example.of(teacher)).size > 0) throw UserAlreadyExistsException()
 
         val validRoles = appUserRequest.roles.map { userRoleRepository.findByRoleName(it).get() }.toMutableSet()
         teacher.userRoles = validRoles
@@ -33,21 +34,25 @@ class AppUserServiceImpl(
 
     override fun findById(id: UUID): AppUserDto {
         val teacher = appUserRepository.findById(id)
-        return if (teacher.isPresent) {
-            teacher.get().toDto()!!
-        } else throw NoSuchElementException("teacher not found: id = $id")
+        if (teacher.isEmpty) throw UserNotFoundException()
+        return teacher.get().toDto()!!
     }
 
     override fun deleteById(id: UUID) {
         val teacher = appUserRepository.findById(id)
-        if (teacher.isPresent) {
-            appUserRepository.deleteById(id)
-        }
+        if (teacher.isEmpty) throw UserNotFoundException()
+        appUserRepository.deleteById(id)
     }
 
     override fun update(id: UUID, appUserRequest: AppUserRequest): AppUserDto {
+
+        val existingUser = appUserRepository.findById(id)
+        if (existingUser.isEmpty) throw UserNotFoundException()
+
+        appUserRequest.validate()
         val teacher = appUserRequest.toEntity()
         teacher.id = id
+
         return appUserRepository.save(teacher).toDto()!!
     }
 
