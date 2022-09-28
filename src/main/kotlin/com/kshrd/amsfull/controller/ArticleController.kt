@@ -115,7 +115,7 @@ class ArticleController(val articleService: ArticleService) {
         ResponseEntity.ok().body(
             ApiResponse.SuccessWithPayload(
                 message = "updated article with id $id",
-                status = "201",
+                status = "200",
                 payload = articleService.update(id, article)
             )
         )

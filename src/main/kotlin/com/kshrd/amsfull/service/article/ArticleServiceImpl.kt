@@ -1,7 +1,9 @@
 package com.kshrd.amsfull.service.article
 
+import com.kshrd.amsfull.exception.GeneralNotFoundException
 import com.kshrd.amsfull.model.dto.ArticleDto
 import com.kshrd.amsfull.model.dto.CommentDto
+import com.kshrd.amsfull.model.entity.Category
 import com.kshrd.amsfull.model.request.ArticleRequest
 import com.kshrd.amsfull.model.request.CommentRequest
 import com.kshrd.amsfull.service.category.CategoryRepository
@@ -19,6 +21,14 @@ class ArticleServiceImpl(
     val commentRepository: CommentRepository,
     val appUserRepository: AppUserRepository,
 ) : ArticleService {
+
+    private fun Set<String>.mapExistingCategories(): List<Category> =
+        this.map {
+            val data = categoryRepository.findByNameContainingIgnoreCase(it)
+            if (data.isEmpty) throw GeneralNotFoundException(_resourceName = "category '$it'")
+            data.get()
+        }
+
     override fun createArticle(articleRequest: ArticleRequest): ArticleDto {
 
         articleRequest.validate()
@@ -26,10 +36,10 @@ class ArticleServiceImpl(
         article.createdDate = LocalDateTime.now()
         article.lastModified = article.createdDate
 
+        if (articleRequest.categories.isEmpty()) throw IllegalStateException("categories not provided")
+
         // set categories for the article
-        article.categories = articleRequest.categories
-            .map { categoryRepository.findAllByNameStartsWith(it)[0] }
-            .toMutableSet()
+        article.categories = articleRequest.categories.mapExistingCategories().toMutableSet()
 
         // set teacher for the article
         val fetchedTeacher = appUserRepository.findById(articleRequest.teacherId)
@@ -46,29 +56,39 @@ class ArticleServiceImpl(
     }
 
     override fun findByArticleId(id: UUID): ArticleDto {
-        return articleRepository.findById(id).orElseThrow().toDto()!!
+        val article = articleRepository.findById(id)
+        if (article.isEmpty) throw GeneralNotFoundException(_resourceName = "article")
+        return article.get().toDto()!!
     }
 
     override fun deleteById(id: UUID) {
         val article = articleRepository.findById(id)
-        if (article.isPresent)
-            articleRepository.deleteById(id)
-        else throw NoSuchElementException("cannot find article $id")
+        if (article.isEmpty) throw GeneralNotFoundException(_resourceName = "article")
+        articleRepository.deleteById(id)
     }
 
     override fun update(id: UUID, req: ArticleRequest): ArticleDto {
         val article = req.toEntity()
-
         val articleData = articleRepository.findById(id)
+        if (articleData.isEmpty) throw GeneralNotFoundException(_resourceName = "article")
 
+        // set article ID
         article.id = id
-        article.teacher = appUserRepository.findById(req.teacherId).get()
-        article.categories = req.categories
-            .map { categoryRepository.findAllByNameStartsWith(it)[0] }
-            .toMutableSet()
 
+        // find and set existing teacher
+        val teacher = appUserRepository.findById(req.teacherId)
+        if (teacher.isEmpty) throw GeneralNotFoundException(_resourceName = "teacher")
+        article.teacher = teacher.get()
+
+        // check for categories then set them in the Entity
+        if (req.categories.isEmpty()) throw IllegalStateException("categories not provided")
+        article.categories = req.categories.mapExistingCategories().toMutableSet()
+
+        // update timestamps
         article.createdDate = articleData.get().createdDate
         article.lastModified = LocalDateTime.now()
+
+        // persist data
         return articleRepository.save(article).toDto()!!
     }
 
