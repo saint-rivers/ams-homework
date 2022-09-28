@@ -11,10 +11,10 @@ import java.util.UUID
 @RequestMapping("/api/v1/bookmarks")
 class BookmarkController(val bookmarkService: BookmarkService) {
 
-    @PostMapping("/user/{id}")
+    @PostMapping("/user/{userId}")
     fun addBookmark(
         @RequestBody bookmarkRequest: BookmarkRequest,
-        @PathVariable("id") userId: UUID
+        @PathVariable("userId") userId: UUID
     ): ResponseEntity<ApiResponse> {
         val payload = bookmarkService.addBookmark(userId, bookmarkRequest)
 
@@ -27,9 +27,9 @@ class BookmarkController(val bookmarkService: BookmarkService) {
         )
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/user/{userId}")
     fun fetch(
-        @PathVariable("id") userId: UUID,
+        @PathVariable("userId") userId: UUID,
         @RequestParam("page", defaultValue = "1") page: Int,
         @RequestParam("size", defaultValue = "5") size: Int
     ): ResponseEntity<ApiResponse> {
@@ -50,9 +50,9 @@ class BookmarkController(val bookmarkService: BookmarkService) {
         )
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/user/{userId}")
     fun removeBookmark(
-        @PathVariable("id") userId: UUID,
+        @PathVariable("userId") userId: UUID,
         @RequestParam("articleId") articleId: UUID
     ): ResponseEntity<ApiResponse> {
         bookmarkService.remove(userId, articleId)

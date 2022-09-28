@@ -1,6 +1,8 @@
 package com.kshrd.amsfull.controller
 
+import com.kshrd.amsfull.exception.ArticleAlreadyBookmarkedException
 import com.kshrd.amsfull.exception.ArticleAlreadyPublishedException
+import com.kshrd.amsfull.exception.BookmarkNotFoundException
 import com.kshrd.amsfull.exception.GeneralNotFoundException
 import com.kshrd.amsfull.model.response.ApiResponse
 import org.springframework.dao.DuplicateKeyException
@@ -40,7 +42,12 @@ class ExceptionHandler {
         )
     )
 
-    @ExceptionHandler(value = [ArticleAlreadyPublishedException::class])
+    @ExceptionHandler(
+        value = [
+            ArticleAlreadyPublishedException::class,
+            BookmarkNotFoundException::class,
+            ArticleAlreadyBookmarkedException::class]
+    )
     fun handleArticleAlreadyPublishedException(e: Exception) = ResponseEntity.badRequest().body(
         ApiResponse.Failure(
             message = e.localizedMessage, status = "400"

@@ -1,5 +1,7 @@
 package com.kshrd.amsfull.service.bookmark
 
+import com.kshrd.amsfull.exception.ArticleAlreadyBookmarkedException
+import com.kshrd.amsfull.exception.BookmarkNotFoundException
 import com.kshrd.amsfull.model.dto.BookmarkDto
 import com.kshrd.amsfull.model.entity.AppUser
 import com.kshrd.amsfull.model.entity.Article
@@ -20,6 +22,9 @@ class BookmarkServiceImpl(
     override fun addBookmark(userId: UUID, bookmarkRequest: BookmarkRequest): List<BookmarkDto> {
 
         val (user, article) = isExistingUserAndArticle(userId, bookmarkRequest.articleId)
+
+        val isExistingBookmark = articleRepository.findExistingBookmark(user.id!!, article.id!!)
+        if (isExistingBookmark) throw ArticleAlreadyBookmarkedException()
 
         user.bookmarkedArticles.add(article)
         return appUserRepository.save(user).bookmarkedArticles.map { it.toBookmarkDto() }
@@ -43,8 +48,13 @@ class BookmarkServiceImpl(
 
     override fun remove(userId: UUID, articleId: UUID) {
         val (user, article) = isExistingUserAndArticle(userId, articleId)
+
+        val isExistingBookmark = articleRepository.findExistingBookmark(user.id!!, article.id!!)
+        if (!isExistingBookmark) throw BookmarkNotFoundException()
+
         user.bookmarkedArticles.remove(article)
         val savedUser = appUserRepository.save(user)
+
         if (savedUser.bookmarkedArticles.contains(article)) throw IllegalStateException("Unable to remove article id: $articleId")
     }
 

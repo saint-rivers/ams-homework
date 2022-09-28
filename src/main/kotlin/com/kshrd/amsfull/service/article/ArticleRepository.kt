@@ -16,4 +16,16 @@ interface ArticleRepository : JpaRepository<Article, UUID> {
 
 //    @Query("select a from Article a join AppUser u where ")
 //    fun findBookmarkedArticles(userId: UUID, pageable: Pageable): Page<Article>
+
+    @Query(
+        value = "select exists " +
+                "(" +
+                "select 1 from ams.public.user_bookmarked_articles " +
+                "where app_user_id = :userId " +
+                "and bookmarked_article_id = :articleId" +
+                ")",
+        nativeQuery = true
+    )
+    fun findExistingBookmark(userId: UUID, articleId: UUID): Boolean
+
 }
