@@ -1,7 +1,7 @@
 package com.kshrd.amsfull.service.category
 
-import com.kshrd.amsfull.exception.GeneralNotFoundException
-import com.kshrd.amsfull.exception.GeneralResourceAlreadyExistsException
+import com.kshrd.amsfull.exception.common.CommonNotFoundException
+import com.kshrd.amsfull.exception.common.CommonResourceAlreadyExistsException
 import com.kshrd.amsfull.model.dto.CategoryDto
 import com.kshrd.amsfull.model.entity.Category
 import com.kshrd.amsfull.model.request.CategoryRequest
@@ -14,14 +14,14 @@ class CategoryServiceImpl(val categoryRepository: CategoryRepository) : Category
 
     private fun fetchExistingCategory(id: Long): Category {
         val category = categoryRepository.findById(id)
-        if (category.isEmpty) throw GeneralNotFoundException(_resourceName = "category")
+        if (category.isEmpty) throw CommonNotFoundException(_resourceName = "category")
         return category.get()
     }
 
     private fun fetchExistingCategoriesByName(name: String): List<Category> {
         val existingCategories = categoryRepository.findAllByNameStartsWith(name)
         if (!existingCategories.isEmpty())
-            throw GeneralResourceAlreadyExistsException(_resourceName = "category name")
+            throw CommonResourceAlreadyExistsException(_resourceName = "category name")
         return existingCategories
     }
 

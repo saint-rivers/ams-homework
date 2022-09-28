@@ -1,4 +1,4 @@
-package com.kshrd.amsfull.exception
+package com.kshrd.amsfull.exception.user
 
 import org.springframework.dao.DuplicateKeyException
 

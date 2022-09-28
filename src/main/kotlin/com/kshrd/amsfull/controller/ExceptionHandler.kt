@@ -1,9 +1,9 @@
 package com.kshrd.amsfull.controller
 
-import com.kshrd.amsfull.exception.ArticleAlreadyBookmarkedException
-import com.kshrd.amsfull.exception.ArticleAlreadyPublishedException
-import com.kshrd.amsfull.exception.BookmarkNotFoundException
-import com.kshrd.amsfull.exception.GeneralNotFoundException
+import com.kshrd.amsfull.exception.article.ArticleAlreadyBookmarkedException
+import com.kshrd.amsfull.exception.article.ArticleAlreadyPublishedException
+import com.kshrd.amsfull.exception.article.BookmarkNotFoundException
+import com.kshrd.amsfull.exception.common.CommonNotFoundException
 import com.kshrd.amsfull.model.response.ApiResponse
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.ResponseEntity
@@ -28,7 +28,7 @@ class ExceptionHandler {
         )
     )
 
-    @ExceptionHandler(value = [NotFoundException::class, GeneralNotFoundException::class])
+    @ExceptionHandler(value = [NotFoundException::class, CommonNotFoundException::class])
     fun handleNotFoundException(e: Exception) = ResponseEntity.badRequest().body(
         ApiResponse.Failure(
             message = e.localizedMessage, status = "400"

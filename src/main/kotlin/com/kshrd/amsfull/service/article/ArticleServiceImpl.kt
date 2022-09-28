@@ -1,7 +1,7 @@
 package com.kshrd.amsfull.service.article
 
-import com.kshrd.amsfull.exception.ArticleAlreadyPublishedException
-import com.kshrd.amsfull.exception.GeneralNotFoundException
+import com.kshrd.amsfull.exception.article.ArticleAlreadyPublishedException
+import com.kshrd.amsfull.exception.common.CommonNotFoundException
 import com.kshrd.amsfull.model.dto.ArticleDto
 import com.kshrd.amsfull.model.dto.CommentDto
 import com.kshrd.amsfull.model.entity.Category
@@ -26,7 +26,7 @@ class ArticleServiceImpl(
     private fun Set<String>.mapExistingCategories(): List<Category> =
         this.map {
             val data = categoryRepository.findByNameContainingIgnoreCase(it)
-            if (data.isEmpty) throw GeneralNotFoundException(_resourceName = "category '$it'")
+            if (data.isEmpty) throw CommonNotFoundException(_resourceName = "category '$it'")
             data.get()
         }
 
@@ -58,27 +58,27 @@ class ArticleServiceImpl(
 
     override fun findByArticleId(id: UUID): ArticleDto {
         val article = articleRepository.findById(id)
-        if (article.isEmpty) throw GeneralNotFoundException(_resourceName = "article")
+        if (article.isEmpty) throw CommonNotFoundException(_resourceName = "article")
         return article.get().toDto()!!
     }
 
     override fun deleteById(id: UUID) {
         val article = articleRepository.findById(id)
-        if (article.isEmpty) throw GeneralNotFoundException(_resourceName = "article")
+        if (article.isEmpty) throw CommonNotFoundException(_resourceName = "article")
         articleRepository.deleteById(id)
     }
 
     override fun update(id: UUID, req: ArticleRequest): ArticleDto {
         val article = req.toEntity()
         val articleData = articleRepository.findById(id)
-        if (articleData.isEmpty) throw GeneralNotFoundException(_resourceName = "article")
+        if (articleData.isEmpty) throw CommonNotFoundException(_resourceName = "article")
 
         // set article ID
         article.id = id
 
         // find and set existing teacher
         val teacher = appUserRepository.findById(req.teacherId)
-        if (teacher.isEmpty) throw GeneralNotFoundException(_resourceName = "teacher")
+        if (teacher.isEmpty) throw CommonNotFoundException(_resourceName = "teacher")
         article.teacher = teacher.get()
 
         // check for categories then set them in the Entity
@@ -120,7 +120,7 @@ class ArticleServiceImpl(
 
     override fun publishArticle(id: UUID) {
         val article = articleRepository.findById(id)
-        if (article.isEmpty) throw GeneralNotFoundException(_resourceName = "article")
+        if (article.isEmpty) throw CommonNotFoundException(_resourceName = "article")
 
         val updatedArticle = article.get()
         if (updatedArticle.isPublished!!) throw ArticleAlreadyPublishedException()

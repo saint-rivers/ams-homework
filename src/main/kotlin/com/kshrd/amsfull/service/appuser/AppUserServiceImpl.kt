@@ -1,7 +1,7 @@
 package com.kshrd.amsfull.service.appuser
 
-import com.kshrd.amsfull.exception.UserAlreadyExistsException
-import com.kshrd.amsfull.exception.UserNotFoundException
+import com.kshrd.amsfull.exception.user.UserAlreadyExistsException
+import com.kshrd.amsfull.exception.user.UserNotFoundException
 import com.kshrd.amsfull.model.dto.AppUserDto
 import com.kshrd.amsfull.model.request.AppUserRequest
 import com.kshrd.amsfull.service.article.UserRoleRepository

@@ -1,6 +1,6 @@
 package com.kshrd.amsfull.model.request
 
-import com.kshrd.amsfull.exception.InvalidRoleException
+import com.kshrd.amsfull.exception.user.InvalidRoleException
 import com.kshrd.amsfull.model.entity.AppUser
 import com.kshrd.amsfull.model.enum.UserRole
 import com.kshrd.amsfull.service.validator.isEmail

@@ -1,7 +1,7 @@
 package com.kshrd.amsfull.service.bookmark
 
-import com.kshrd.amsfull.exception.ArticleAlreadyBookmarkedException
-import com.kshrd.amsfull.exception.BookmarkNotFoundException
+import com.kshrd.amsfull.exception.article.ArticleAlreadyBookmarkedException
+import com.kshrd.amsfull.exception.article.BookmarkNotFoundException
 import com.kshrd.amsfull.model.dto.BookmarkDto
 import com.kshrd.amsfull.model.entity.AppUser
 import com.kshrd.amsfull.model.entity.Article

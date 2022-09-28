@@ -1,6 +1,6 @@
 package com.kshrd.amsfull.model.request
 
-import com.kshrd.amsfull.exception.InvalidUriException
+import com.kshrd.amsfull.exception.common.InvalidUriException
 import com.kshrd.amsfull.model.entity.Category
 import com.kshrd.amsfull.service.validator.isUrl
 import io.swagger.v3.oas.annotations.Hidden
