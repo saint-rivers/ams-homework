@@ -1,5 +1,5 @@
 build:
-	./gradlew build -x test
+	./gradlew bootJar -x test
 
 deploy:
 	docker-compose up -d --build

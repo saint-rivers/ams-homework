@@ -18,15 +18,17 @@ Change directory to the project.
 cd ams-kshrd
 ```
 
-Run the shell script to build a JAR file and deploy two docker containers.
+This project will create two containers, which are...
 
 1. A PostgreSQL database container
 2. A JDK container with the AMS API
 
+Run the commands below to build and deploy the project.
+
 Build the jar file:
 
 ```shell
-make build
+make -B build
 ```
 
 Deploy all relevant containers
