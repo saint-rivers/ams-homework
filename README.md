@@ -9,7 +9,7 @@ For testing and training purposes in Korea Software HRD Center.
 Clone the project
 
 ```shell
-git clone https://github.com/saint-rivers/ams-homework.git ams-kshrd
+git clone https://github.com/saint-rivers/kotlin-springboot-ams.git ams-kshrd
 ```
 
 Change directory to the project.
