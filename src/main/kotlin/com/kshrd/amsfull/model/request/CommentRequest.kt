@@ -5,7 +5,7 @@ import java.io.Serializable
 
 data class CommentRequest(val caption: String) : Serializable {
     fun toEntity(): Comment = Comment(
-        _caption = caption
+        caption = caption
     )
 
 }

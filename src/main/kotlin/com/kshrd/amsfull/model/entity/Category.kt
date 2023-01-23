@@ -2,16 +2,16 @@ package com.kshrd.amsfull.model.entity
 
 import com.kshrd.amsfull.model.dto.CategoryDto
 import org.hibernate.Hibernate
-import org.hibernate.annotations.Type
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "categories", uniqueConstraints = [UniqueConstraint(name = "uk_category_name", columnNames = ["name"])])
-class Category(name: String, imageUrl: String) {
+class Category() {
 
-//    constructor(id: Long, name: String, imageUrl: String) : this(name, imageUrl) {
-//        this.id = id
-//    }
+    constructor(name: String, imageUrl: String) : this() {
+        this.name = name
+        this.imageUrl = imageUrl
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,14 +19,14 @@ class Category(name: String, imageUrl: String) {
     var id: Long? = null
 
     @Column(name = "name", nullable = false, length = 100)
-    var name: String? = name
+    lateinit var name: String
 
 //    @ManyToMany(mappedBy = "categories", cascade = [CascadeType.PERSIST, CascadeType.MERGE])
 //    var articles: MutableSet<Article> = mutableSetOf()
 
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "image_url")
-    var imageUrl: String? = imageUrl
+//    @Type(type = "org.hibernate.type.TextType")
+    @Column(name = "image_url", columnDefinition = "TEXT")
+    lateinit var imageUrl: String
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -37,6 +37,6 @@ class Category(name: String, imageUrl: String) {
     }
 
     override fun hashCode(): Int = javaClass.hashCode()
-    fun toDto(): CategoryDto = CategoryDto(id = id!!, name = name!!, imageUrl = imageUrl!!)
+    fun toDto(): CategoryDto = CategoryDto(id = id!!, name = name, imageUrl = imageUrl)
 
 }

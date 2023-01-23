@@ -106,7 +106,7 @@ class ArticleServiceImpl(
             val fetchedArticle = article.get()
             fetchedArticle.comments.add(savedComment)
             articleRepository.save(fetchedArticle)
-            return savedComment.toDto()
+            return savedComment.toDto()!!
         } else throw NoSuchElementException("cannot find article $id")
     }
 
@@ -114,7 +114,7 @@ class ArticleServiceImpl(
         val article = articleRepository.findById(articleId)
         if (article.isPresent) {
             val comments = commentRepository.findAllByArticle(article.get())
-            return comments.map { it.toDto() }
+            return comments.map { it.toDto()!! }
         } else throw NoSuchElementException("cannot find article $articleId")
     }
 

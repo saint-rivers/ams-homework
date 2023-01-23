@@ -6,12 +6,17 @@ import org.hibernate.Hibernate
 import org.hibernate.annotations.OnDelete
 import org.hibernate.annotations.OnDeleteAction
 import java.time.LocalDateTime
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "articles")
-open class Article(title: String, description: String, isPublished: Boolean = false, thumbnail: String) :
-    Document(title = title, description = description, isPublished = isPublished, thumbnail = thumbnail) {
+open class Article : Document {
+
+    constructor() : super()
+
+    constructor(title: String, description: String, isPublished: Boolean = false, thumbnail: String) :
+            super(title = title, description = description, isPublished = isPublished, thumbnail = thumbnail) {
+    }
 
     @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH])
     @JoinTable(
@@ -54,7 +59,7 @@ open class Article(title: String, description: String, isPublished: Boolean = fa
             categories = categories.map { cat -> cat.toDto() }.toSet(),
             isPublished = isPublished == true,
             teacher = teacher?.toDto()!!,
-            comments = comments.map { comment -> comment.toDto() }.toSet(),
+            comments = comments.map { comment -> comment.toDto()!! }.toSet(),
             thumbnail = thumbnail!!,
             createdDate = createdDate!!,
             lastModified = lastModified!!

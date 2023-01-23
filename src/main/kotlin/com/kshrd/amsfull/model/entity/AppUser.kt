@@ -1,9 +1,8 @@
 package com.kshrd.amsfull.model.entity
 
 import com.kshrd.amsfull.model.dto.AppUserDto
-import org.hibernate.annotations.Type
 import java.util.*
-import javax.persistence.*
+import jakarta.persistence.*
 
 @Entity
 @Table(
@@ -17,14 +16,15 @@ import javax.persistence.*
         )
     ],
 )
-open class AppUser(username: String, email: String, profile: String, telephone: String) {
+class AppUser() {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    open var id: UUID? = null
+    var id: UUID? = null
 
     @Column(name = "username", nullable = false)
-    open var username: String? = username
+    var username: String? = null
 
     @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JoinTable(
@@ -32,7 +32,7 @@ open class AppUser(username: String, email: String, profile: String, telephone: 
         joinColumns = [JoinColumn(name = "app_user_id", foreignKey = ForeignKey(name = "fk_user_id"))],
         inverseJoinColumns = [JoinColumn(name = "bookmarked_article_id", foreignKey = ForeignKey(name = "fk_article_id"))]
     )
-    open var bookmarkedArticles: MutableSet<Article> = mutableSetOf()
+    var bookmarkedArticles: MutableList<Article> = mutableListOf()
 
     @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     @JoinTable(
@@ -40,17 +40,23 @@ open class AppUser(username: String, email: String, profile: String, telephone: 
         joinColumns = [JoinColumn(name = "app_user_id", foreignKey = ForeignKey(name = "fk_user_id"))],
         inverseJoinColumns = [JoinColumn(name = "user_role_id", foreignKey = ForeignKey(name = "fk_role_id"))]
     )
-    open var userRoles: MutableSet<UserRole> = mutableSetOf()
+    var userRoles: MutableSet<UserRole> = mutableSetOf()
 
     @Column(name = "email")
-    open var email: String? = email
+    var email: String? = null
 
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "profile_picture_url", nullable = false)
-    open var profile: String? = profile
+    @Column(name = "profile_picture_url", nullable = false, columnDefinition = "TEXT")
+    var profile: String? = null
 
     @Column(name = "telephone")
-    open var telephone: String? = telephone
+    var telephone: String? = null
+
+    constructor(username: String?, email: String?, profile: String?, telephone: String?) : this() {
+        this.username = username
+        this.email = email
+        this.profile = profile
+        this.telephone = telephone
+    }
 
     fun toDto() = username?.let {
         AppUserDto(
@@ -59,7 +65,7 @@ open class AppUser(username: String, email: String, profile: String, telephone: 
             email = email!!,
             profile = profile!!,
             telephone = telephone!!,
-            roles = userRoles.mapNotNull { role -> role.roleName }.toSet(),
+            roles = userRoles.map { role -> role.roleName }.toSet(),
         )
     }
 

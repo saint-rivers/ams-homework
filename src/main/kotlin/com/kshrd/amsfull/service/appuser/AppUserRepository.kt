@@ -2,14 +2,11 @@ package com.kshrd.amsfull.service.appuser
 
 import com.kshrd.amsfull.model.entity.AppUser
 import com.kshrd.amsfull.model.entity.Article
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Query
 import java.util.*
-import javax.persistence.ColumnResult
-import javax.persistence.ConstructorResult
-import javax.persistence.SqlResultSetMapping
+import jakarta.persistence.ColumnResult
+import jakarta.persistence.ConstructorResult
+import jakarta.persistence.SqlResultSetMapping
 
 @SqlResultSetMapping(
     name = "bookmarkedArticleMapping",
@@ -51,7 +48,7 @@ interface AppUserRepository : JpaRepository<AppUser, UUID> {
 //        nativeQuery = true,
 //    )
 
-    @Query("select u.bookmarkedArticles from AppUser u join u.bookmarkedArticles where u.id = :userId")
-    fun findBookmarksOfUser(userId: UUID, pageable: Pageable): Page<Article>
+//    @Query("select u.bookmarkedArticles from AppUser u join u.bookmarkedArticles where u.id = :userId")
+//    fun findBookmarksOfUser(userId: UUID, pageable: Pageable): Page<Article>
 
 }

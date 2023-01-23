@@ -1,33 +1,37 @@
 package com.kshrd.amsfull.model.entity
 
-import org.hibernate.annotations.Type
 import java.util.*
-import javax.persistence.*
+import jakarta.persistence.*
 
 @MappedSuperclass
 open class Document(
-    title: String,
-    description: String,
-    isPublished: Boolean,
-    thumbnail: String
 ) {
+    constructor(
+        title: String,
+        description: String,
+        isPublished: Boolean,
+        thumbnail: String
+    ) : this() {
+        this.title = title
+        this.description = description
+        this.isPublished = isPublished
+        this.thumbnail = thumbnail
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    open var id: UUID? = null
+    var id: UUID? = null
 
     @Column(name = "title")
-    open var title: String? = title
+    var title: String? = null
 
-    @Type(type = "org.hibernate.type.TextType")
     @Column(name = "description", columnDefinition = "TEXT")
-    open var description: String? = description
+    var description: String? = null
 
     @Column(name = "is_published", nullable = false)
-    open var isPublished: Boolean? = isPublished
+    var isPublished: Boolean? = null
 
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "thumbnail", nullable = false)
-    open var thumbnail: String? = thumbnail
+    @Column(name = "thumbnail", nullable = false, columnDefinition = "TEXT")
+    var thumbnail: String? = null
 }

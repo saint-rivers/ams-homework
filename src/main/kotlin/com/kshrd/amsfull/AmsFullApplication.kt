@@ -23,7 +23,8 @@ class ApplicationStart(val userRoleRepository: UserRoleRepository) : CommandLine
         )
         roles.map {
             if (userRoleRepository.findByRoleName(it.name).isEmpty) {
-                userRoleRepository.save(UserRole(it.name))
+                val role = UserRole(null, it.name)
+                userRoleRepository.save(role)
             }
         }
     }
