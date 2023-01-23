@@ -13,7 +13,8 @@ files:
     path: /opt/resources/files
 
 server:
-  name: https://springams.hrd-edu.info
+#  name: https://springams.hrd-edu.info
+  name: http://8.219.139.67:6654
 
 logging:
   file:
