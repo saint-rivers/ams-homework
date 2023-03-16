@@ -18,6 +18,7 @@ class SecurityConfig {
     fun cors(): CorsConfigurationSource {
         val cors = CorsConfiguration()
         cors.allowedOrigins = listOf("*")
+        cors.allowedHeaders = listOf("Access-Control-Allow-Origin")
         val source = UrlBasedCorsConfigurationSource()
         source.setCorsConfigurations(mapOf("/**" to cors))
         return source
