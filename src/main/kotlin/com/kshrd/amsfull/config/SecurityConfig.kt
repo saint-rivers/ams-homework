@@ -24,7 +24,7 @@ class SecurityConfig {
     }
 
     @Bean
-    fun securityConfig(http: HttpSecurity): SecurityFilterChain {
+    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .authorizeHttpRequests {
                 it.anyRequest().permitAll()
