@@ -34,7 +34,7 @@ class AppUser() {
     )
     var bookmarkedArticles: MutableList<Article> = mutableListOf()
 
-    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE])
+    @ManyToMany(cascade = [CascadeType.PERSIST, CascadeType.MERGE], fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_roles",
         joinColumns = [JoinColumn(name = "app_user_id", foreignKey = ForeignKey(name = "fk_user_id"))],
@@ -56,6 +56,13 @@ class AppUser() {
         this.email = email
         this.profile = profile
         this.telephone = telephone
+    }
+    constructor(username: String?, email: String?, profile: String?, telephone: String?, roles: MutableSet<UserRole>) : this() {
+        this.username = username
+        this.email = email
+        this.profile = profile
+        this.telephone = telephone
+        this.userRoles = roles
     }
 
     fun toDto() = username?.let {

@@ -17,7 +17,7 @@ data class AppUserRequest(
     val telephone: String,
     val roles: MutableSet<String> = mutableSetOf()
 ) : Serializable {
-//    fun toEntity(): AppUser {
+    //    fun toEntity(): AppUser {
 //        return if (isValid()) AppUser(
 //            username = username,
 //            email = email,
@@ -44,6 +44,7 @@ data class AppUserRequest(
             )
         }
     }
+
     internal fun validate() {
         isValid()
     }

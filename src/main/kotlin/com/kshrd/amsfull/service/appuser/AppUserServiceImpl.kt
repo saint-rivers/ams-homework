@@ -50,10 +50,13 @@ class AppUserServiceImpl(
         if (existingUser.isEmpty) throw UserNotFoundException()
 
         appUserRequest.validate()
+        val validRoles = appUserRequest.roles.map { userRoleRepository.findByRoleName(it).get() }.toMutableSet()
         val teacher = appUserRequest.toEntity()
+        teacher.userRoles = validRoles
         teacher.id = id
 
-        return appUserRepository.save(teacher).toDto()!!
+        val data = appUserRepository.save(teacher)
+        return data.toDto()!!
     }
 
 
